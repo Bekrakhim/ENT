@@ -1,0 +1,1290 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="ЕНТ Дайын — пробное тестирование по дисциплинам ЕНТ: регистрация, выбор дисциплины и уровня, прохождение теста и разбор результатов.">
+<title>ЕНТ Дайын</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#15242E;
+    --ink-soft:#4B5B63;
+    --azure-700:#0B5F80;
+    --azure-600:#0E7AA4;
+    --azure-500:#1C93C2;
+    --azure-100:#E4F2F6;
+    --gold-500:#D79A32;
+    --gold-600:#B9832B;
+    --gold-100:#FBF0D9;
+    --sand-50:#F7F3EA;
+    --surface:#FFFFFF;
+    --surface-2:#FCFAF4;
+    --line:rgba(21,36,46,0.12);
+    --line-soft:rgba(21,36,46,0.07);
+    --success:#3E8F63;
+    --success-bg:#E6F2EA;
+    --danger:#C1503F;
+    --danger-bg:#FBEAE6;
+    --shadow:0 18px 40px -18px rgba(21,36,46,0.28), 0 2px 8px -2px rgba(21,36,46,0.12);
+    --radius-lg:24px;
+    --radius-md:16px;
+    --radius-sm:10px;
+    --font-display:'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body:'Manrope', -apple-system, 'Segoe UI', sans-serif;
+    --font-mono:'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#ECE8DD;
+      --ink-soft:#AFB8BC;
+      --azure-700:#7FD0EF;
+      --azure-600:#52B8DD;
+      --azure-500:#3EA2C9;
+      --azure-100:rgba(82,184,221,0.14);
+      --gold-500:#E8B85E;
+      --gold-600:#F0C878;
+      --gold-100:rgba(232,184,94,0.14);
+      --sand-50:#0F1A21;
+      --surface:#17252D;
+      --surface-2:#1C2B33;
+      --line:rgba(236,232,221,0.14);
+      --line-soft:rgba(236,232,221,0.08);
+      --success:#69BD8F;
+      --success-bg:rgba(105,189,143,0.14);
+      --danger:#E08475;
+      --danger-bg:rgba(224,132,117,0.14);
+      --shadow:0 18px 40px -18px rgba(0,0,0,0.55), 0 2px 8px -2px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#ECE8DD;
+    --ink-soft:#AFB8BC;
+    --azure-700:#7FD0EF;
+    --azure-600:#52B8DD;
+    --azure-500:#3EA2C9;
+    --azure-100:rgba(82,184,221,0.14);
+    --gold-500:#E8B85E;
+    --gold-600:#F0C878;
+    --gold-100:rgba(232,184,94,0.14);
+    --sand-50:#0F1A21;
+    --surface:#17252D;
+    --surface-2:#1C2B33;
+    --line:rgba(236,232,221,0.14);
+    --line-soft:rgba(236,232,221,0.08);
+    --success:#69BD8F;
+    --success-bg:rgba(105,189,143,0.14);
+    --danger:#E08475;
+    --danger-bg:rgba(224,132,117,0.14);
+    --shadow:0 18px 40px -18px rgba(0,0,0,0.55), 0 2px 8px -2px rgba(0,0,0,0.35);
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--sand-50);
+    color:var(--ink);
+    font-family:var(--font-body);
+    padding-block:24px;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+  }
+  .stage{
+    width:100%;
+    max-width:440px;
+    padding-inline:0;
+  }
+  .device{
+    background:var(--surface);
+    min-height:calc(100vh - 48px);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    overflow:hidden;
+  }
+  @media (min-width:700px){
+    body{padding-block:40px;}
+    .device{
+      border-radius:36px;
+      box-shadow:var(--shadow);
+      min-height:840px;
+      max-height:880px;
+      border:1px solid var(--line-soft);
+    }
+  }
+  .notch{
+    height:10px;
+    flex:none;
+  }
+  .topbar{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:18px 20px 14px;
+    flex:none;
+    border-bottom:1px solid transparent;
+  }
+  .topbar.with-line{border-bottom:1px solid var(--line-soft);}
+  .topbar .back-btn{
+    width:36px;height:36px;border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--surface-2);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink); cursor:pointer; flex:none;
+    font-size:16px;
+  }
+  .topbar h1{
+    font-family:var(--font-display);
+    font-size:19px;
+    font-weight:600;
+    margin:0;
+    flex:1;
+    text-wrap:balance;
+  }
+  .topbar .spacer{width:36px;flex:none;}
+  .topbar .text-link{
+    border:none;background:none;color:var(--azure-600);
+    font-family:var(--font-body);font-weight:700;font-size:13.5px;
+    cursor:pointer;padding:6px 2px;
+  }
+  .content{
+    flex:1;
+    overflow-y:auto;
+    padding:4px 20px 24px;
+  }
+  .content.no-pad{padding:0;}
+  .tabbar{
+    flex:none;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border-top:1px solid var(--line-soft);
+    background:var(--surface);
+    padding:8px 6px calc(8px + env(safe-area-inset-bottom, 0px));
+  }
+  .tab-item{
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+    padding:6px 2px; border:none;background:none;cursor:pointer;
+    color:var(--ink-soft); font-family:var(--font-body); font-size:11.5px; font-weight:600;
+  }
+  .tab-item .tab-ico{
+    width:22px;height:22px;
+  }
+  .tab-item.active{color:var(--azure-600);}
+  .tab-item svg{display:block;margin:0 auto;}
+
+  h1,h2,h3{font-family:var(--font-display); text-wrap:balance; margin:0;}
+  .eyebrow{
+    font-size:11.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--azure-600);
+  }
+  p{margin:0; line-height:1.5;}
+  .muted{color:var(--ink-soft);}
+  .num{font-family:var(--font-mono); font-variant-numeric:tabular-nums;}
+
+  .btn{
+    font-family:var(--font-body); font-weight:700; font-size:15px;
+    border-radius:14px; padding:14px 18px; border:1px solid transparent;
+    cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+    width:100%; transition:transform .12s ease, opacity .12s ease;
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn-primary{background:var(--azure-600); color:#fff;}
+  .btn-primary:disabled{opacity:0.45; cursor:not-allowed;}
+  .btn-gold{background:var(--gold-500); color:#2B1C06;}
+  .btn-outline{background:transparent; border-color:var(--line); color:var(--ink);}
+  .btn-ghost{background:var(--surface-2); color:var(--ink);}
+  .btn-danger-ghost{background:var(--danger-bg); color:var(--danger);}
+  .btn-sm{padding:10px 14px; font-size:13.5px; width:auto; border-radius:11px;}
+
+  label.field-label{
+    display:block; font-size:12.5px; font-weight:700; color:var(--ink-soft);
+    margin-bottom:7px; letter-spacing:0.02em;
+  }
+  .field{margin-bottom:16px;}
+  input[type=text],input[type=email],input[type=tel],input[type=password],select,textarea{
+    width:100%; font-family:var(--font-body); font-size:15.5px; color:var(--ink);
+    background:var(--surface-2); border:1.5px solid var(--line); border-radius:12px;
+    padding:13px 14px; outline:none;
+  }
+  input:focus,select:focus,textarea:focus{border-color:var(--azure-500);}
+  .otp-input{
+    text-align:center; letter-spacing:0.5em; font-family:var(--font-mono); font-size:22px;
+    font-weight:600;
+  }
+  .seg{
+    display:flex; background:var(--surface-2); border:1.5px solid var(--line); border-radius:12px; padding:4px; gap:4px;
+  }
+  .seg button{
+    flex:1; border:none; background:none; padding:10px 8px; border-radius:9px; font-weight:700;
+    font-size:13.5px; color:var(--ink-soft); cursor:pointer; font-family:var(--font-body);
+  }
+  .seg button.active{background:var(--azure-600); color:#fff;}
+  .hint{font-size:12px; color:var(--ink-soft); margin-top:6px;}
+  .err{font-size:12.5px; color:var(--danger); margin-top:6px; font-weight:600;}
+
+  .card{
+    background:var(--surface-2); border:1px solid var(--line-soft); border-radius:var(--radius-md);
+    padding:16px;
+  }
+  .card-lg{border-radius:var(--radius-lg); padding:20px;}
+
+  .brandmark{
+    width:68px; height:68px; border-radius:20px; background:linear-gradient(155deg, var(--azure-600), var(--azure-700));
+    display:flex; align-items:center; justify-content:center; color:#fff; font-family:var(--font-display);
+    font-size:26px; font-weight:700; box-shadow:0 10px 24px -10px rgba(14,122,164,0.55);
+  }
+
+  .stat-row{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
+  .stat-tile{
+    background:var(--surface-2); border:1px solid var(--line-soft); border-radius:14px; padding:14px 10px; text-align:center;
+  }
+  .stat-tile .v{font-family:var(--font-mono); font-size:20px; font-weight:600; display:block;}
+  .stat-tile .l{font-size:11px; color:var(--ink-soft); font-weight:600; margin-top:2px; display:block;}
+
+  .disc-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .disc-card{
+    background:var(--surface-2); border:1.5px solid var(--line-soft); border-radius:16px; padding:14px;
+    display:flex; flex-direction:column; gap:10px; cursor:pointer; text-align:left;
+  }
+  .disc-card.disabled{opacity:0.55;}
+  .disc-card .mono{
+    width:38px;height:38px;border-radius:11px; background:var(--azure-100); color:var(--azure-700);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; font-family:var(--font-body);
+  }
+  .disc-card .nm{font-size:13.5px; font-weight:700; line-height:1.3;}
+  .disc-card .tag{font-size:10.5px; color:var(--ink-soft); font-weight:600;}
+
+  .level-card{
+    display:flex; align-items:center; gap:14px; padding:16px; border-radius:16px; border:1.5px solid var(--line-soft);
+    background:var(--surface-2); margin-bottom:12px; cursor:pointer;
+  }
+  .level-card .dot{width:10px;height:10px;border-radius:50%; flex:none;}
+  .level-card .tt{font-weight:700; font-size:15px;}
+  .level-card .dd{font-size:12px; color:var(--ink-soft); margin-top:2px;}
+  .level-card .ar{margin-left:auto; color:var(--ink-soft);}
+
+  .qnav{display:flex; gap:7px; overflow-x:auto; padding-bottom:4px; margin-bottom:6px;}
+  .qnav .pill{
+    flex:none; width:30px;height:30px;border-radius:9px; border:1.5px solid var(--line);
+    display:flex;align-items:center;justify-content:center; font-family:var(--font-mono); font-size:12px; font-weight:600;
+    background:var(--surface-2); color:var(--ink-soft); cursor:pointer;
+  }
+  .qnav .pill.current{border-color:var(--azure-600); color:var(--azure-600); background:var(--azure-100);}
+  .qnav .pill.answered{background:var(--azure-600); color:#fff; border-color:var(--azure-600);}
+  .qnav .pill.answered.current{background:var(--azure-700); border-color:var(--azure-700); color:#fff;}
+
+  .progress-bar{height:6px; border-radius:4px; background:var(--line-soft); overflow:hidden; margin-bottom:18px;}
+  .progress-bar .fill{height:100%; background:var(--gold-500); border-radius:4px; transition:width .2s ease;}
+
+  .q-text{font-family:var(--font-display); font-size:19px; font-weight:600; line-height:1.38; margin-bottom:18px;}
+  .opt{
+    display:flex; align-items:flex-start; gap:12px; padding:14px; border-radius:14px; border:1.5px solid var(--line);
+    background:var(--surface-2); margin-bottom:10px; cursor:pointer;
+  }
+  .opt .letter{
+    width:28px;height:28px;border-radius:9px; background:var(--surface); border:1.5px solid var(--line);
+    display:flex;align-items:center;justify-content:center; font-weight:700; font-size:12.5px; flex:none; font-family:var(--font-body);
+  }
+  .opt .txt{font-size:14.5px; line-height:1.4; padding-top:4px;}
+  .opt.selected{border-color:var(--azure-600); background:var(--azure-100);}
+  .opt.selected .letter{background:var(--azure-600); border-color:var(--azure-600); color:#fff;}
+  .opt.review-correct{border-color:var(--success); background:var(--success-bg);}
+  .opt.review-correct .letter{background:var(--success); border-color:var(--success); color:#fff;}
+  .opt.review-wrong{border-color:var(--danger); background:var(--danger-bg);}
+  .opt.review-wrong .letter{background:var(--danger); border-color:var(--danger); color:#fff;}
+
+  .quiz-footer{display:flex; gap:10px; margin-top:6px;}
+
+  .ring-wrap{display:flex; flex-direction:column; align-items:center; margin:6px 0 20px;}
+  .ring-wrap .pct{font-family:var(--font-mono); font-size:34px; font-weight:600; margin-top:-96px;}
+  .ring-wrap .lbl{font-size:12px; color:var(--ink-soft); font-weight:600; margin-top:4px;}
+
+  .result-row{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:18px;}
+  .result-tile{border-radius:14px; padding:14px; text-align:center;}
+  .result-tile.ok{background:var(--success-bg); color:var(--success);}
+  .result-tile.bad{background:var(--danger-bg); color:var(--danger);}
+  .result-tile .v{font-family:var(--font-mono); font-size:24px; font-weight:700; display:block;}
+  .result-tile .l{font-size:11.5px; font-weight:700; margin-top:3px; display:block;}
+
+  .review-item{border-bottom:1px solid var(--line-soft); padding:12px 0;}
+  .review-item:last-child{border-bottom:none;}
+  .review-item .head{display:flex; align-items:center; gap:8px; cursor:pointer;}
+  .review-item .ix{font-family:var(--font-mono); font-size:12px; color:var(--ink-soft); flex:none; width:20px;}
+  .review-item .qt{font-size:13.5px; font-weight:600; flex:1; line-height:1.35;}
+  .review-item .chip{
+    flex:none; width:20px;height:20px;border-radius:50%; display:flex;align-items:center;justify-content:center;
+    font-size:11px; font-weight:800; color:#fff;
+  }
+  .review-item .chip.ok{background:var(--success);}
+  .review-item .chip.bad{background:var(--danger);}
+  .review-detail{display:none; margin-top:10px; padding-left:28px; font-size:13px; line-height:1.5;}
+  .review-detail.open{display:block;}
+  .review-detail .ans-line{margin-bottom:3px;}
+  .review-detail .ans-line b{font-weight:700;}
+
+  .history-item{
+    display:flex; align-items:center; gap:12px; padding:14px; border-radius:14px; border:1px solid var(--line-soft);
+    background:var(--surface-2); margin-bottom:10px; cursor:pointer;
+  }
+  .history-item .mono{
+    width:40px;height:40px;border-radius:11px; background:var(--azure-100); color:var(--azure-700);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex:none;
+  }
+  .history-item .mid{flex:1; min-width:0;}
+  .history-item .mid .t1{font-weight:700; font-size:13.5px;}
+  .history-item .mid .t2{font-size:11.5px; color:var(--ink-soft); margin-top:2px;}
+  .history-item .score{font-family:var(--font-mono); font-weight:700; font-size:16px; flex:none;}
+
+  .empty-state{display:flex; flex-direction:column; align-items:center; text-align:center; padding:48px 16px; gap:10px;}
+  .empty-state .ico{font-size:30px;}
+
+  .chip{
+    display:inline-flex; align-items:center; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:700;
+    background:var(--azure-100); color:var(--azure-700);
+  }
+
+  .modal-overlay{
+    position:absolute; inset:0; background:rgba(10,16,20,0.5); display:flex; align-items:flex-end; justify-content:center;
+    z-index:30; opacity:0; pointer-events:none; transition:opacity .18s ease;
+  }
+  .modal-overlay.show{opacity:1; pointer-events:auto;}
+  .modal-sheet{
+    background:var(--surface); border-radius:22px 22px 0 0; padding:22px 20px 26px; width:100%; max-height:85%;
+    overflow-y:auto; transform:translateY(100%); transition:transform .22s ease;
+  }
+  .modal-overlay.show .modal-sheet{transform:translateY(0);}
+  .modal-sheet h3{font-size:17px; margin-bottom:12px;}
+  .email-preview{
+    background:var(--surface-2); border:1px solid var(--line-soft); border-radius:12px; padding:14px; font-size:13px; line-height:1.55;
+    white-space:pre-wrap; font-family:var(--font-mono); margin-bottom:14px;
+  }
+
+  .toast{
+    position:absolute; bottom:90px; left:20px; right:20px; background:var(--ink); color:var(--sand-50);
+    padding:13px 16px; border-radius:12px; font-size:13.5px; font-weight:600; text-align:center;
+    opacity:0; transform:translateY(8px); transition:all .2s ease; z-index:40; pointer-events:none;
+  }
+  :root[data-theme="dark"] .toast{background:var(--surface-2); color:var(--ink); border:1px solid var(--line);}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .toast{background:var(--surface-2); color:var(--ink); border:1px solid var(--line);} }
+  .toast.show{opacity:1; transform:translateY(0);}
+
+  .kaspi-teaser{
+    border-radius:16px; padding:16px; background:linear-gradient(135deg, var(--gold-100), var(--surface-2));
+    border:1px solid var(--line-soft); display:flex; align-items:center; gap:12px; margin-top:18px;
+  }
+  .kaspi-teaser .kl{
+    width:42px;height:42px;border-radius:12px; background:var(--gold-500); color:#2B1C06; display:flex;
+    align-items:center;justify-content:center; font-weight:800; font-size:13px; flex:none;
+  }
+  .kaspi-teaser .kt{font-weight:700; font-size:13.5px;}
+  .kaspi-teaser .kd{font-size:11.5px; color:var(--ink-soft); margin-top:2px;}
+  .soon-badge{
+    margin-left:auto; font-size:10px; font-weight:800; color:var(--gold-600); background:var(--gold-100);
+    padding:4px 8px; border-radius:20px; flex:none;
+  }
+
+  .divider{height:1px; background:var(--line-soft); margin:18px 0;}
+  .row{display:flex; align-items:center; justify-content:space-between;}
+  .gap-8{display:flex; flex-direction:column; gap:8px;}
+  .gap-12{display:flex; flex-direction:column; gap:12px;}
+  a.link{color:var(--azure-600); font-weight:700; text-decoration:none;}
+  .center-col{display:flex; flex-direction:column; align-items:center; text-align:center;}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="device" id="device">
+    <div class="notch"></div>
+    <div id="topbar"></div>
+    <div id="content" class="content"></div>
+    <div id="tabbar"></div>
+    <div id="modalRoot"></div>
+    <div id="toast" class="toast"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- static data ---------------- */
+
+  var CITIES = ["Алматы","Астана","Шымкент","Актобе","Караганда","Тараз","Павлодар","Өскемен","Семей","Атырау","Костанай","Кызылорда","Уральск","Петропавловск","Темиртау","Другой"];
+  var GOALS = ["Поступление на грант","Повышение текущего балла","Подготовка к ЕНТ 2027","Пробное прохождение для самопроверки","Другое"];
+
+  var DISCIPLINES = [
+    {id:"mat_gram",  name:"Математическая грамотность", mono:"МГ"},
+    {id:"read_gram", name:"Грамотность чтения",          mono:"ГЧ"},
+    {id:"math",      name:"Математика",                   mono:"МТ"},
+    {id:"physics",   name:"Физика",                        mono:"ФЗ"},
+    {id:"chemistry", name:"Химия",                         mono:"ХМ"},
+    {id:"biology",   name:"Биология",                       mono:"БЛ"},
+    {id:"history_kz",name:"История Казахстана",            mono:"ИК"},
+    {id:"world_hist",name:"Всемирная история",             mono:"ВИ"},
+    {id:"geography", name:"География",                     mono:"ГГ"},
+    {id:"english",   name:"Английский язык",                mono:"АЯ"}
+  ];
+  var HAS_QUESTIONS = {math:true, history_kz:true};
+
+  var LEVELS = [
+    {id:"easy",   name:"Лёгкий",   desc:"Базовые вопросы для разминки", color:"var(--success)"},
+    {id:"medium", name:"Средний",  desc:"Уровень, близкий к экзамену",   color:"var(--gold-500)"},
+    {id:"hard",   name:"Сложный",  desc:"Повышенная сложность ЕНТ",      color:"var(--danger)"}
+  ];
+
+  function opts(a,b,c,d,e){ return [a,b,c,d,e]; }
+
+  var FALLBACK_QUESTIONS = {
+    "math_easy": {disciplineId:"math", disciplineName:"Математика", level:"easy", items:[
+      {id:"m_e_1", text:"Чему равно 15% от 240?", options:opts("24","30","36","40","48"), correctIndex:2},
+      {id:"m_e_2", text:"Решите уравнение: 3x − 7 = 14. Чему равен x?", options:opts("5","6","7","8","9"), correctIndex:2},
+      {id:"m_e_3", text:"Периметр квадрата равен 36 см. Чему равна его сторона?", options:opts("6 см","7 см","8 см","9 см","10 см"), correctIndex:3},
+      {id:"m_e_4", text:"Какое из чисел является простым?", options:opts("21","33","39","51","53"), correctIndex:4},
+      {id:"m_e_5", text:"Вычислите: (8 + 12) ÷ 4", options:opts("3","4","5","6","7"), correctIndex:2}
+    ]},
+    "math_medium": {disciplineId:"math", disciplineName:"Математика", level:"medium", items:[
+      {id:"m_m_1", text:"Найдите корни уравнения x² − 5x + 6 = 0", options:opts("1 и 6","2 и 3","−2 и −3","1 и 5","3 и 4"), correctIndex:1},
+      {id:"m_m_2", text:"Чему равен log₂32?", options:opts("3","4","5","6","7"), correctIndex:2},
+      {id:"m_m_3", text:"Площадь круга радиусом 7 (π ≈ 22/7)", options:opts("132","154","176","198","210"), correctIndex:1},
+      {id:"m_m_4", text:"В арифметической прогрессии a₁ = 3, d = 4. Найдите a₁₀.", options:opts("36","37","38","39","40"), correctIndex:3},
+      {id:"m_m_5", text:"Производная функции f(x) = x³ − 2x равна", options:opts("3x² − 2","3x²","x² − 2","3x − 2","3x² − 2x"), correctIndex:0}
+    ]},
+    "math_hard": {disciplineId:"math", disciplineName:"Математика", level:"hard", items:[
+      {id:"m_h_1", text:"Решите неравенство: x² − 4x − 5 < 0", options:opts("(−1; 5)","(−5; 1)","(1; 5)","(−∞;−1)∪(5;+∞)","(−5;−1)"), correctIndex:0},
+      {id:"m_h_2", text:"Вычислите предел lim(x→0) sin(3x)/x", options:opts("0","1","3","1/3","∞"), correctIndex:2},
+      {id:"m_h_3", text:"Сколько решений имеет уравнение cos x = x на отрезке [0; π]?", options:opts("0","1","2","3","бесконечно много"), correctIndex:1},
+      {id:"m_h_4", text:"Матрица A размером 3×4, матрица B размером 4×2. Каков размер произведения AB?", options:opts("3×2","4×4","2×3","3×4","4×2"), correctIndex:0},
+      {id:"m_h_5", text:"Сумма первых 20 членов геометрической прогрессии b₁ = 1, q = 2 равна", options:opts("2²⁰ − 1","2¹⁹ − 1","2²⁰","2²¹ − 1","2¹⁹"), correctIndex:0}
+    ]},
+    "history_kz_easy": {disciplineId:"history_kz", disciplineName:"История Казахстана", level:"easy", items:[
+      {id:"h_e_1", text:"В каком году была принята действующая Конституция Республики Казахстан?", options:opts("1991","1993","1995","1997","2000"), correctIndex:2},
+      {id:"h_e_2", text:"Кто был избран первым Президентом Республики Казахстан?", options:opts("Н. Назарбаев","К. Токаев","Д. Кунаев","Ш. Уалиханов","А. Кунанбаев"), correctIndex:0},
+      {id:"h_e_3", text:"Какой хан считается одним из основателей Казахского ханства вместе с Кереем?", options:opts("Жанибек хан","Абылай хан","Кенесары хан","Тауке хан","Аблай хан"), correctIndex:0},
+      {id:"h_e_4", text:"Какой год считается годом образования Казахского ханства?", options:opts("1465","1456","1470","1480","1500"), correctIndex:0},
+      {id:"h_e_5", text:"Что является государственным языком Республики Казахстан?", options:opts("Русский","Казахский","Английский","Казахский и русский","Единого гос. языка нет"), correctIndex:1}
+    ]},
+    "history_kz_medium": {disciplineId:"history_kz", disciplineName:"История Казахстана", level:"medium", items:[
+      {id:"h_m_1", text:"«Жеты Жаргы» — это:", options:opts("свод законов при Тауке хане","военный союз","торговый путь","поэтический эпос","налоговая система"), correctIndex:0},
+      {id:"h_m_2", text:"Восстание под руководством Кенесары Касымова проходило в:", options:opts("1783–1797","1837–1847","1850–1860","1916","1929"), correctIndex:1},
+      {id:"h_m_3", text:"Переход казахов к оседлости в советский период связан с политикой:", options:opts("коллективизации","индустриализации","культурной революции","военного коммунизма","НЭПа"), correctIndex:0},
+      {id:"h_m_4", text:"Какое событие произошло в Казахстане в декабре 1986 года?", options:opts("Желтоксан","Целинная кампания","Семипалатинские испытания","Ашаршылык","Перенос столицы"), correctIndex:0},
+      {id:"h_m_5", text:"Абай Кунанбаев известен как:", options:opts("хан","батыр","просветитель и поэт","полководец","путешественник"), correctIndex:2}
+    ]},
+    "history_kz_hard": {disciplineId:"history_kz", disciplineName:"История Казахстана", level:"hard", items:[
+      {id:"h_h_1", text:"Начало голода (Ашаршылык), связанного с насильственной коллективизацией, принято отнести к:", options:opts("1921","1928","1930","1932","1937"), correctIndex:2},
+      {id:"h_h_2", text:"Семипалатинский ядерный полигон был официально закрыт в:", options:opts("1989","1991","1993","1995","1996"), correctIndex:1},
+      {id:"h_h_3", text:"Н. Назарбаев объявил о переносе столицы из Алматы в Акмолу в:", options:opts("1994","1995","1996","1997","1998"), correctIndex:3},
+      {id:"h_h_4", text:"Кто был одним из лидеров партии Алаш и движения Алаш-Орда?", options:opts("Алихан Букейханов","Динмухамед Кунаев","Нурсултан Назарбаев","Касым-Жомарт Токаев","Жамбыл Жабаев"), correctIndex:0},
+      {id:"h_h_5", text:"Казахстан подписал Договор о нераспространении ядерного оружия в:", options:opts("1992","1993","1994","1995","1996"), correctIndex:2}
+    ]}
+  };
+
+  /* ---------------- helpers ---------------- */
+
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,9); }
+  function esc(s){
+    return String(s==null?"":s).replace(/[&<>"']/g, function(c){
+      return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[c];
+    });
+  }
+  function fmtDate(iso){
+    try{
+      var d = new Date(iso);
+      return d.toLocaleDateString("ru-RU",{day:"2-digit",month:"short"}) + ", " + d.toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"});
+    }catch(e){ return ""; }
+  }
+  function pct(n,total){ return total>0 ? Math.round((n/total)*100) : 0; }
+  function scoreColorVar(p){
+    if(p>=70) return "var(--success)";
+    if(p>=40) return "var(--gold-500)";
+    return "var(--danger)";
+  }
+  function levelName(id){ var l=LEVELS.filter(function(x){return x.id===id;})[0]; return l?l.name:id; }
+  function disciplineName(id){ var d=DISCIPLINES.filter(function(x){return x.id===id;})[0]; return d?d.name:id; }
+  function disciplineMono(id){ var d=DISCIPLINES.filter(function(x){return x.id===id;})[0]; return d?d.mono:"??"; }
+
+  var toastTimer=null;
+  function toast(msg){
+    var el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ el.classList.remove("show"); }, 2600);
+  }
+
+  /* ---------------- storage layer (db capability with in-memory fallback) ---------------- */
+
+  var Store = {
+    db:null,
+    ready:false,
+    usingLocalFallback:false,
+    mem:{ users:[], attempts:[] },
+
+    /* When the artifact "db" capability is unavailable (public demo link,
+       a copy hosted outside claude.ai, or this viewer simply declined),
+       every record still persists — but only on THIS device/browser, via
+       localStorage, instead of the shared cross-device store. */
+    lsLoad(key){
+      try{
+        var raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : [];
+      }catch(e){ return []; }
+    },
+    lsSave(key, arr){
+      try{ localStorage.setItem(key, JSON.stringify(arr)); }catch(e){}
+    },
+
+    async init(){
+      try{
+        if(window.claude && window.claude.use){
+          this.db = await window.claude.use("db");
+        }
+      }catch(e){ this.db = null; }
+      if(!this.db){
+        this.usingLocalFallback = true;
+        this.mem.users = this.lsLoad("entdayyn_users");
+        this.mem.attempts = this.lsLoad("entdayyn_attempts");
+      }
+      this.ready = true;
+    },
+
+    async findUserByContact(contact){
+      if(this.db){
+        try{
+          var snap = await this.db.collection("users").where("contact","==",contact).limit(1).get();
+          if(snap.size>0){ var d=snap.docs[0]; return Object.assign({id:d.id}, d.data()); }
+          return null;
+        }catch(e){ /* fall through to local as last resort */ }
+      }
+      return this.mem.users.filter(function(u){return u.contact===contact;})[0] || null;
+    },
+
+    async createUser(data){
+      var id = uid();
+      var rec = Object.assign({}, data, {createdAt:new Date().toISOString()});
+      if(this.db){
+        try{
+          await this.db.collection("users").doc(id).set(rec);
+          return Object.assign({id:id}, rec);
+        }catch(e){ /* fall back to local */ }
+      }
+      var local = Object.assign({id:id}, rec);
+      this.mem.users.push(local);
+      this.lsSave("entdayyn_users", this.mem.users);
+      return local;
+    },
+
+    async updateUser(id, patch){
+      if(this.db){
+        try{ await this.db.collection("users").doc(id).update(patch); return; }catch(e){}
+      }
+      var u = this.mem.users.filter(function(x){return x.id===id;})[0];
+      if(u){ Object.assign(u, patch); this.lsSave("entdayyn_users", this.mem.users); }
+    },
+
+    async getUserById(id){
+      if(this.db){
+        try{
+          var snap = await this.db.collection("users").doc(id).get();
+          if(snap.exists) return Object.assign({id:id}, snap.data());
+        }catch(e){}
+      }
+      return this.mem.users.filter(function(x){return x.id===id;})[0] || null;
+    },
+
+    async getQuestions(disciplineId, level){
+      var key = disciplineId + "_" + level;
+      if(this.db){
+        try{
+          var snap = await this.db.doc("questions/"+key).get();
+          if(snap.exists){ return snap.data(); }
+        }catch(e){}
+      }
+      return FALLBACK_QUESTIONS[key] || null;
+    },
+
+    async saveAttempt(data){
+      var rec = Object.assign({}, data);
+      if(this.db){
+        try{
+          var ref = await this.db.collection("attempts").add(rec);
+          return Object.assign({id:ref.id}, rec);
+        }catch(e){}
+      }
+      var local = Object.assign({id:uid()}, rec);
+      this.mem.attempts.push(local);
+      this.lsSave("entdayyn_attempts", this.mem.attempts);
+      return local;
+    },
+
+    async listAttempts(userId){
+      if(this.db){
+        try{
+          var snap = await this.db.collection("attempts").where("userId","==",userId).get();
+          var arr = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+          arr.sort(function(a,b){ return (b.finishedAt||"").localeCompare(a.finishedAt||""); });
+          return arr;
+        }catch(e){}
+      }
+      return this.mem.attempts.filter(function(a){return a.userId===userId;})
+        .sort(function(a,b){ return (b.finishedAt||"").localeCompare(a.finishedAt||""); });
+    }
+  };
+
+  /* ---------------- app state ---------------- */
+
+  var S = {
+    screen:"splash",
+    authMode:"register",        // register | login
+    contactType:"email",        // email | phone
+    pendingReg:null,             // staged registration data awaiting OTP
+    pendingLoginContact:null,
+    user:null,
+    disciplineId:null,
+    level:null,
+    quiz:null,                   // {items, index, answers:{}, startedAt, key}
+    lastResult:null,
+    attempts:[],
+    attemptDetail:null,
+    profileEdit:false,
+    err:{}
+  };
+
+  try{
+    var savedUid = localStorage.getItem("entdayyn_uid");
+    if(savedUid) S._resumeUid = savedUid;
+  }catch(e){}
+
+  function setErr(field, msg){ S.err[field]=msg; }
+  function clearErr(){ S.err={}; }
+
+  /* ---------------- rendering ---------------- */
+
+  function iconHome(active){ return '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 11.5L12 4l8 7.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1V11.5Z" stroke="currentColor" stroke-width="'+(active?2.2:1.7)+'" stroke-linejoin="round"/></svg>'; }
+  function iconTest(active){ return '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="3.5" width="14" height="17" rx="2.2" stroke="currentColor" stroke-width="'+(active?2.2:1.7)+'"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5" stroke="currentColor" stroke-width="'+(active?2.2:1.7)+'" stroke-linecap="round"/></svg>'; }
+  function iconHistory(active){ return '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1 0 3-6.7" stroke="currentColor" stroke-width="'+(active?2.2:1.7)+'" stroke-linecap="round"/><path d="M3 4.5V9h4.5" stroke="currentColor" stroke-width="'+(active?2.2:1.7)+'" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8v4.5l3 2" stroke="currentColor" stroke-width="'+(active?2.2:1.7)+'" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+  function iconProfile(active){ return '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="'+(active?2.2:1.7)+'"/><path d="M4.8 20c1-3.6 4-5.6 7.2-5.6s6.2 2 7.2 5.6" stroke="currentColor" stroke-width="'+(active?2.2:1.7)+'" stroke-linecap="round"/></svg>'; }
+
+  var TABS = [
+    {id:"home", label:"Главная", icon:iconHome},
+    {id:"disciplines", label:"Тест", icon:iconTest},
+    {id:"history", label:"История", icon:iconHistory},
+    {id:"profile", label:"Профиль", icon:iconProfile}
+  ];
+
+  function renderTabbar(){
+    var tb = document.getElementById("tabbar");
+    var showTabs = ["home","disciplines","levels","history","profile"].indexOf(S.screen)>-1 && S.user;
+    if(!showTabs){ tb.innerHTML=""; return; }
+    var active = (S.screen==="levels") ? "disciplines" : S.screen;
+    tb.innerHTML = '<div class="tabbar">' + TABS.map(function(t){
+      return '<button class="tab-item '+(t.id===active?"active":"")+'" data-action="tab" data-arg="'+t.id+'">'+
+        t.icon(t.id===active) + '<span>'+t.label+'</span></button>';
+    }).join("") + '</div>';
+  }
+
+  function renderTopbar(opts){
+    var tb = document.getElementById("topbar");
+    if(!opts){ tb.innerHTML=""; return; }
+    var left = opts.back ? '<button class="back-btn" data-action="back">‹</button>' : '<div class="spacer"></div>';
+    var right = opts.rightLabel ? '<button class="text-link" data-action="'+opts.rightAction+'">'+opts.rightLabel+'</button>' : '<div class="spacer"></div>';
+    tb.innerHTML = '<div class="topbar '+(opts.line?"with-line":"")+'">' + left + '<h1>'+esc(opts.title)+'</h1>' + right + '</div>';
+  }
+
+  function render(){
+    var c = document.getElementById("content");
+    c.className = "content";
+    switch(S.screen){
+      case "splash": renderTopbar(null); c.innerHTML = screenSplash(); break;
+      case "authChoice": renderTopbar(null); c.innerHTML = screenAuthChoice(); break;
+      case "register": renderTopbar({title:"Регистрация", back:true}); c.innerHTML = screenRegister(); break;
+      case "registerOtp": renderTopbar({title:"Подтверждение", back:true}); c.innerHTML = screenOtp("register"); break;
+      case "login": renderTopbar({title:"Вход", back:true}); c.innerHTML = screenLogin(); break;
+      case "loginOtp": renderTopbar({title:"Подтверждение", back:true}); c.innerHTML = screenOtp("login"); break;
+      case "home": renderTopbar(null); c.innerHTML = screenHome(); break;
+      case "disciplines": renderTopbar({title:"Выбор дисциплины"}); c.innerHTML = screenDisciplines(); break;
+      case "levels": renderTopbar({title:"Уровень сложности", back:true}); c.innerHTML = screenLevels(); break;
+      case "quiz": renderTopbar({title:disciplineName(S.disciplineId), rightLabel:"Завершить", rightAction:"finishPrompt"}); c.innerHTML = screenQuiz(); break;
+      case "results": renderTopbar({title:"Результат теста"}); c.innerHTML = screenResults(S.lastResult, false); break;
+      case "history": renderTopbar({title:"История попыток"}); c.innerHTML = screenHistory(); break;
+      case "attemptDetail": renderTopbar({title:"Подробности попытки", back:true}); c.innerHTML = screenResults(S.attemptDetail, true); break;
+      case "profile": renderTopbar({title:"Профиль"}); c.innerHTML = screenProfile(); break;
+    }
+    renderTabbar();
+    window.scrollTo(0,0);
+    c.scrollTop = 0;
+  }
+
+  /* ---- splash / auth ---- */
+
+  function screenSplash(){
+    return '' +
+      '<div class="center-col" style="padding-top:13vh; gap:16px;">'+
+        '<div class="brandmark">ЕД</div>'+
+        '<div>'+
+          '<h1 style="font-size:27px;">ЕНТ Дайын</h1>'+
+          '<p class="muted" style="margin-top:8px; max-width:280px;">Пробное тестирование по дисциплинам ЕНТ. Вопросы, уровни сложности и разбор ответов — в одном приложении.</p>'+
+        '</div>'+
+      '</div>'+
+      '<div style="position:absolute; left:20px; right:20px; bottom:28px;" class="gap-12">'+
+        '<button class="btn btn-primary" data-action="goto" data-arg="authChoice">Начать</button>'+
+        '<p class="hint" style="text-align:center;">Демо-режим: подтверждение по коду без реальной отправки SMS/почты</p>'+
+        (Store.usingLocalFallback ? '<p class="hint" style="text-align:center;">Данные сохраняются только в этом браузере, на этом устройстве</p>' : '')+
+      '</div>';
+  }
+
+  function screenAuthChoice(){
+    return '' +
+      '<div style="padding-top:10vh;" class="gap-12">'+
+        '<div class="center-col" style="margin-bottom:8px;">'+
+          '<div class="brandmark" style="width:54px;height:54px;font-size:20px;margin-bottom:14px;">ЕД</div>'+
+          '<h2 style="font-size:21px;">Добро пожаловать</h2>'+
+          '<p class="muted" style="margin-top:6px;">Войдите или создайте аккаунт, чтобы сохранять результаты пробных тестов</p>'+
+        '</div>'+
+        '<button class="btn btn-primary" data-action="goto" data-arg="register">Регистрация</button>'+
+        '<button class="btn btn-outline" data-action="goto" data-arg="login">У меня есть аккаунт</button>'+
+      '</div>';
+  }
+
+  function fieldErr(key){ return S.err[key] ? '<div class="err">'+esc(S.err[key])+'</div>' : ""; }
+
+  function screenRegister(){
+    var r = S.pendingReg || {fio:"",city:CITIES[0],goal:GOALS[0],goalOther:"",contact:""};
+    var ct = S.contactType;
+    return '' +
+      '<form id="registerForm" class="gap-8" style="margin-top:6px;">'+
+        '<div class="field">'+
+          '<label class="field-label">ФИО</label>'+
+          '<input type="text" id="f_fio" placeholder="Например: Ахметов Ерлан Болатович" value="'+esc(r.fio)+'" autocomplete="name">'+
+          fieldErr("fio")+
+        '</div>'+
+        '<div class="field">'+
+          '<label class="field-label">Город</label>'+
+          '<select id="f_city">'+ CITIES.map(function(c){ return '<option '+(r.city===c?"selected":"")+'>'+c+'</option>'; }).join("") +'</select>'+
+        '</div>'+
+        '<div class="field">'+
+          '<label class="field-label">Цель подготовки</label>'+
+          '<select id="f_goal">'+ GOALS.map(function(g){ return '<option '+(r.goal===g?"selected":"")+'>'+g+'</option>'; }).join("") +'</select>'+
+          (r.goal==="Другое" ? '<input type="text" id="f_goal_other" placeholder="Уточните цель" value="'+esc(r.goalOther)+'" style="margin-top:8px;">' : '')+
+        '</div>'+
+        '<div class="field">'+
+          '<label class="field-label">Способ связи для входа и результатов</label>'+
+          '<div class="seg" style="margin-bottom:10px;">'+
+            '<button type="button" data-action="setContactType" data-arg="email" class="'+(ct==="email"?"active":"")+'">Почта</button>'+
+            '<button type="button" data-action="setContactType" data-arg="phone" class="'+(ct==="phone"?"active":"")+'">Телефон</button>'+
+          '</div>'+
+          (ct==="email" ?
+            '<input type="email" id="f_contact" placeholder="you@example.com" value="'+esc(r.contact)+'" autocomplete="email">' :
+            '<input type="tel" id="f_contact" placeholder="+7 7XX XXX XX XX" value="'+esc(r.contact)+'" autocomplete="tel">')+
+          fieldErr("contact")+
+        '</div>'+
+        '<button type="submit" class="btn btn-primary" style="margin-top:6px;">Получить код подтверждения</button>'+
+        '<p class="hint" style="text-align:center;">Нажимая «Получить код», вы соглашаетесь на обработку данных для подготовки к ЕНТ</p>'+
+      '</form>';
+  }
+
+  function screenLogin(){
+    var ct = S.contactType;
+    return '' +
+      '<form id="loginForm" class="gap-8" style="margin-top:6px;">'+
+        '<div class="field">'+
+          '<label class="field-label">Способ входа</label>'+
+          '<div class="seg" style="margin-bottom:10px;">'+
+            '<button type="button" data-action="setContactType" data-arg="email" class="'+(ct==="email"?"active":"")+'">Почта</button>'+
+            '<button type="button" data-action="setContactType" data-arg="phone" class="'+(ct==="phone"?"active":"")+'">Телефон</button>'+
+          '</div>'+
+          (ct==="email" ?
+            '<input type="email" id="f_login_contact" placeholder="you@example.com" autocomplete="email">' :
+            '<input type="tel" id="f_login_contact" placeholder="+7 7XX XXX XX XX" autocomplete="tel">')+
+          fieldErr("contact")+
+        '</div>'+
+        '<button type="submit" class="btn btn-primary">Получить код входа</button>'+
+        '<p class="hint" style="text-align:center;">Нет аккаунта? <a class="link" data-action="goto" data-arg="register">Зарегистрируйтесь</a></p>'+
+      '</form>';
+  }
+
+  function screenOtp(mode){
+    var contact = mode==="register" ? (S.pendingReg && S.pendingReg.contact) : S.pendingLoginContact;
+    return '' +
+      '<div style="margin-top:10px;" class="gap-12">'+
+        '<p class="muted">Мы отправили код подтверждения на <b style="color:var(--ink);">'+esc(contact||"")+'</b></p>'+
+        '<div class="card" style="background:var(--gold-100); border-color:transparent;">'+
+          '<p style="font-size:12.5px; font-weight:600;">Демо-режим: реальная отправка SMS/почты не подключена. Используйте код <span class="num" style="font-weight:700;">123456</span></p>'+
+        '</div>'+
+        '<input type="text" id="f_otp" class="otp-input" maxlength="6" placeholder="••••••" inputmode="numeric">'+
+        fieldErr("otp")+
+        '<button class="btn btn-primary" data-action="verifyOtp" data-arg="'+mode+'">Подтвердить</button>'+
+        '<button class="btn btn-ghost btn-sm" style="width:100%;" data-action="resendOtp">Отправить код ещё раз</button>'+
+      '</div>';
+  }
+
+  /* ---- home ---- */
+
+  function screenHome(){
+    var a = S.attempts||[];
+    var avg = a.length ? Math.round(a.reduce(function(s,x){return s+pct(x.correctCount,x.totalQuestions);},0)/a.length) : 0;
+    var best = a.length ? Math.max.apply(null, a.map(function(x){return pct(x.correctCount,x.totalQuestions);})) : 0;
+    var recent = a.slice(0,3);
+    return '' +
+      '<div style="padding-top:6px;">'+
+        '<div class="eyebrow">Добро пожаловать</div>'+
+        '<h2 style="font-size:23px; margin-top:4px;">'+esc((S.user&&S.user.fio)||"")+'</h2>'+
+        '<p class="muted" style="margin-top:4px;">'+esc((S.user&&S.user.city)||"")+' · '+esc((S.user&&S.user.goal)||"")+'</p>'+
+        '<div class="stat-row" style="margin-top:18px;">'+
+          '<div class="stat-tile"><span class="v num">'+a.length+'</span><span class="l">попыток</span></div>'+
+          '<div class="stat-tile"><span class="v num">'+avg+'%</span><span class="l">средний балл</span></div>'+
+          '<div class="stat-tile"><span class="v num">'+best+'%</span><span class="l">лучший результат</span></div>'+
+        '</div>'+
+        '<button class="btn btn-primary" style="margin-top:20px;" data-action="goto" data-arg="disciplines">Начать пробный тест</button>'+
+        '<div class="divider"></div>'+
+        '<div class="row" style="margin-bottom:10px;"><h3 style="font-size:15px;">Последние попытки</h3>'+
+          (a.length ? '<button class="text-link" style="color:var(--azure-600); font-weight:700; background:none; border:none; font-size:12.5px;" data-action="goto" data-arg="history">Все</button>' : '')+
+        '</div>'+
+        (recent.length ? recent.map(historyItemHtml).join("") : emptyState("Пока нет пройденных тестов","Выберите дисциплину, чтобы пройти первый пробный тест."))+
+      '</div>';
+  }
+
+  function emptyState(title, sub){
+    return '<div class="empty-state"><div class="ico">—</div><h3 style="font-size:15px;">'+esc(title)+'</h3><p class="muted" style="font-size:13px;">'+esc(sub)+'</p></div>';
+  }
+
+  /* ---- disciplines / levels ---- */
+
+  function screenDisciplines(){
+    return '' +
+      '<p class="muted" style="margin-bottom:14px;">Выберите предмет — вопросы подобраны по программе ЕНТ</p>'+
+      '<div class="disc-grid">'+
+        DISCIPLINES.map(function(d){
+          var has = !!HAS_QUESTIONS[d.id];
+          return '<button class="disc-card '+(has?"":"disabled")+'" data-action="'+(has?"selectDiscipline":"noQuestions")+'" data-arg="'+d.id+'">'+
+            '<div class="mono">'+d.mono+'</div>'+
+            '<div class="nm">'+esc(d.name)+'</div>'+
+            '<div class="tag">'+(has?"Вопросы доступны":"Скоро появятся")+'</div>'+
+          '</button>';
+        }).join("")+
+      '</div>';
+  }
+
+  function screenLevels(){
+    return '' +
+      '<div class="card" style="margin-bottom:18px; display:flex; align-items:center; gap:12px;">'+
+        '<div class="mono" style="width:40px;height:40px;border-radius:11px; background:var(--azure-100); color:var(--azure-700); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px;">'+disciplineMono(S.disciplineId)+'</div>'+
+        '<div><div style="font-weight:700; font-size:14.5px;">'+esc(disciplineName(S.disciplineId))+'</div><div class="muted" style="font-size:12px;">Выберите уровень сложности</div></div>'+
+      '</div>'+
+      LEVELS.map(function(l){
+        return '<div class="level-card" data-action="selectLevel" data-arg="'+l.id+'">'+
+          '<div class="dot" style="background:'+l.color+';"></div>'+
+          '<div><div class="tt">'+l.name+'</div><div class="dd">'+l.desc+'</div></div>'+
+          '<div class="ar">›</div>'+
+        '</div>';
+      }).join("");
+  }
+
+  /* ---- quiz ---- */
+
+  function screenQuiz(){
+    var q = S.quiz;
+    var item = q.items[q.index];
+    var answered = Object.keys(q.answers).length;
+    return '' +
+      '<div class="qnav">'+
+        q.items.map(function(it,i){
+          var cls = "pill";
+          if(i===q.index) cls += " current";
+          if(q.answers.hasOwnProperty(it.id)) cls += " answered";
+          return '<div class="'+cls+'" data-action="gotoQuestion" data-arg="'+i+'">'+(i+1)+'</div>';
+        }).join("")+
+      '</div>'+
+      '<div class="progress-bar"><div class="fill" style="width:'+Math.round((answered/q.items.length)*100)+'%;"></div></div>'+
+      '<div class="eyebrow">Вопрос '+(q.index+1)+' из '+q.items.length+' · '+levelName(S.level)+'</div>'+
+      '<div class="q-text" style="margin-top:8px;">'+esc(item.text)+'</div>'+
+      '<div>'+
+        item.options.map(function(opt,i){
+          var letters=["А","Б","В","Г","Д"];
+          var sel = q.answers[item.id]===i;
+          return '<div class="opt '+(sel?"selected":"")+'" data-action="selectOption" data-arg="'+item.id+'" data-arg2="'+i+'">'+
+            '<div class="letter">'+letters[i]+'</div><div class="txt">'+esc(opt)+'</div>'+
+          '</div>';
+        }).join("")+
+      '</div>'+
+      '<div class="quiz-footer">'+
+        '<button class="btn btn-outline" data-action="prevQuestion" '+(q.index===0?"disabled":"")+'>Назад</button>'+
+        (q.index<q.items.length-1 ?
+          '<button class="btn btn-primary" data-action="nextQuestion">Далее</button>' :
+          '<button class="btn btn-gold" data-action="finishPrompt">Завершить тест</button>')+
+      '</div>';
+  }
+
+  /* ---- results ---- */
+
+  function ringSvg(p){
+    var r=54, c=2*Math.PI*r;
+    var off = c - (p/100)*c;
+    var col = scoreColorVar(p);
+    return '<svg width="140" height="140" viewBox="0 0 140 140">'+
+      '<circle cx="70" cy="70" r="'+r+'" fill="none" stroke="var(--line-soft)" stroke-width="14"/>'+
+      '<circle cx="70" cy="70" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="14" stroke-linecap="round" '+
+        'stroke-dasharray="'+c.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 70 70)"/>'+
+    '</svg>';
+  }
+
+  function screenResults(res, isDetail){
+    if(!res) return emptyState("Нет данных","Результат не найден.");
+    var p = pct(res.correctCount, res.totalQuestions);
+    return '' +
+      '<div class="gap-12" style="margin-top:4px;">'+
+        '<div class="eyebrow" style="text-align:center;">'+esc(res.disciplineName)+' · '+levelName(res.level)+'</div>'+
+        '<div class="ring-wrap" style="position:relative;">'+
+          ringSvg(p)+
+          '<div class="pct" style="color:'+scoreColorVar(p)+';">'+p+'%</div>'+
+          '<div class="lbl">правильных ответов</div>'+
+        '</div>'+
+        '<div class="result-row">'+
+          '<div class="result-tile ok"><span class="v num">'+res.correctCount+'</span><span class="l">верно</span></div>'+
+          '<div class="result-tile bad"><span class="v num">'+res.wrongCount+'</span><span class="l">неверно</span></div>'+
+        '</div>'+
+        '<p class="muted" style="text-align:center; font-size:12.5px;">Пройдено '+fmtDate(res.finishedAt)+'</p>'+
+        (isDetail ? '' :
+          '<button class="btn btn-outline" data-action="openEmailPreview">Показать письмо с результатом (демо)</button>'
+        )+
+        '<div class="divider"></div>'+
+        '<h3 style="font-size:15px; margin-bottom:4px;">Разбор ответов</h3>'+
+        '<div>'+ res.answers.map(function(a,i){ return reviewItemHtml(a,i); }).join("") +'</div>'+
+        (isDetail ? '' :
+          '<div class="gap-8" style="margin-top:8px;">'+
+            '<button class="btn btn-primary" data-action="retryQuiz">Пройти ещё раз</button>'+
+            '<button class="btn btn-ghost" data-action="goto" data-arg="home">На главный экран</button>'+
+          '</div>'
+        )+
+      '</div>';
+  }
+
+  function reviewItemHtml(a,i){
+    var ok = a.isCorrect;
+    var letters=["А","Б","В","Г","Д"];
+    return '' +
+      '<div class="review-item">'+
+        '<div class="head" data-action="toggleReview" data-arg="'+i+'">'+
+          '<span class="ix">'+(i+1)+'</span>'+
+          '<span class="qt">'+esc(a.text)+'</span>'+
+          '<span class="chip '+(ok?"ok":"bad")+'">'+(ok?"✓":"✕")+'</span>'+
+        '</div>'+
+        '<div class="review-detail" id="rd_'+i+'">'+
+          '<div class="ans-line">Ваш ответ: <b style="color:'+(ok?"var(--success)":"var(--danger)")+';">'+(a.selectedIndex==null?"без ответа":letters[a.selectedIndex]+". "+esc(a.options[a.selectedIndex]))+'</b></div>'+
+          (!ok ? '<div class="ans-line">Правильный ответ: <b style="color:var(--success);">'+letters[a.correctIndex]+". "+esc(a.options[a.correctIndex])+'</b></div>' : '')+
+        '</div>'+
+      '</div>';
+  }
+
+  /* ---- history ---- */
+
+  function historyItemHtml(a){
+    var p = pct(a.correctCount, a.totalQuestions);
+    return '' +
+      '<div class="history-item" data-action="openAttempt" data-arg="'+a.id+'">'+
+        '<div class="mono">'+disciplineMono(a.disciplineId)+'</div>'+
+        '<div class="mid"><div class="t1">'+esc(a.disciplineName)+'</div><div class="t2">'+levelName(a.level)+' · '+fmtDate(a.finishedAt)+'</div></div>'+
+        '<div class="score" style="color:'+scoreColorVar(p)+';">'+p+'%</div>'+
+      '</div>';
+  }
+
+  function screenHistory(){
+    var a = S.attempts||[];
+    if(!a.length) return emptyState("История пуста","Здесь появятся все ваши попытки пробного тестирования.");
+    return '<div>'+ a.map(historyItemHtml).join("") +'</div>';
+  }
+
+  /* ---- profile ---- */
+
+  function screenProfile(){
+    var u = S.user || {};
+    if(S.profileEdit){
+      return '' +
+        '<form id="profileForm" class="gap-8">'+
+          '<div class="field"><label class="field-label">ФИО</label><input type="text" id="p_fio" value="'+esc(u.fio)+'"></div>'+
+          '<div class="field"><label class="field-label">Город</label><select id="p_city">'+CITIES.map(function(c){return '<option '+(u.city===c?"selected":"")+'>'+c+'</option>';}).join("")+'</select></div>'+
+          '<div class="field"><label class="field-label">Цель подготовки</label><select id="p_goal">'+GOALS.map(function(g){return '<option '+(u.goal===g?"selected":"")+'>'+g+'</option>';}).join("")+'</select></div>'+
+          '<button type="submit" class="btn btn-primary">Сохранить</button>'+
+          '<button type="button" class="btn btn-ghost" data-action="cancelEditProfile">Отмена</button>'+
+        '</form>';
+    }
+    var a = S.attempts||[];
+    var avg = a.length ? Math.round(a.reduce(function(s,x){return s+pct(x.correctCount,x.totalQuestions);},0)/a.length) : 0;
+    return '' +
+      '<div class="center-col" style="margin-bottom:18px;">'+
+        '<div class="brandmark" style="font-size:18px;">'+(u.fio?u.fio.trim().charAt(0).toUpperCase():"?")+'</div>'+
+        '<h2 style="font-size:19px; margin-top:12px;">'+esc(u.fio||"")+'</h2>'+
+        '<p class="muted" style="margin-top:2px; font-size:13px;">'+esc(u.contact||"")+'</p>'+
+      '</div>'+
+      '<div class="card-lg gap-8">'+
+        '<div class="row"><span class="muted" style="font-size:13px;">Город</span><span style="font-weight:700; font-size:13.5px;">'+esc(u.city||"—")+'</span></div>'+
+        '<div class="row"><span class="muted" style="font-size:13px;">Цель подготовки</span><span style="font-weight:700; font-size:13.5px; text-align:right; max-width:60%;">'+esc(u.goal||"—")+'</span></div>'+
+        '<div class="row"><span class="muted" style="font-size:13px;">Пройдено тестов</span><span class="num" style="font-weight:700; font-size:13.5px;">'+a.length+'</span></div>'+
+        '<div class="row"><span class="muted" style="font-size:13px;">Средний балл</span><span class="num" style="font-weight:700; font-size:13.5px;">'+avg+'%</span></div>'+
+      '</div>'+
+      '<button class="btn btn-outline" style="margin-top:14px;" data-action="editProfile">Редактировать профиль</button>'+
+      '<div class="kaspi-teaser">'+
+        '<div class="kl">KZ</div>'+
+        '<div><div class="kt">Подписка Kaspi Pay</div><div class="kd">Полный банк заданий и разбор ошибок по подписке</div></div>'+
+        '<div class="soon-badge">Скоро</div>'+
+      '</div>'+
+      '<button class="btn btn-danger-ghost" style="margin-top:18px;" data-action="logout">Выйти из аккаунта</button>';
+  }
+
+  /* ---------------- modal / email preview ---------------- */
+
+  function emailBody(res, user){
+    var p = pct(res.correctCount, res.totalQuestions);
+    return "Кому: " + (user.contact||"") + "\n" +
+      "Тема: Результаты пробного теста ЕНТ — " + res.disciplineName + "\n\n" +
+      "Здравствуйте, " + (user.fio||"") + "!\n\n" +
+      "Вы завершили пробное тестирование:\n" +
+      "Дисциплина: " + res.disciplineName + "\n" +
+      "Уровень: " + levelName(res.level) + "\n" +
+      "Правильных ответов: " + res.correctCount + " из " + res.totalQuestions + " (" + p + "%)\n" +
+      "Неправильных ответов: " + res.wrongCount + "\n\n" +
+      "Желаем успехов в подготовке к ЕНТ!\n— команда ЕНТ Дайын";
+  }
+
+  function openModal(html){
+    document.getElementById("modalRoot").innerHTML =
+      '<div class="modal-overlay show" id="ov" data-action="closeModalBg"><div class="modal-sheet">'+html+'</div></div>';
+  }
+  function closeModal(){ document.getElementById("modalRoot").innerHTML=""; }
+
+  /* ---------------- actions ---------------- */
+
+  function goto(screen){ clearErr(); S.screen=screen; render(); }
+
+  var history_stack = [];
+
+  var Actions = {
+    goto: function(arg){ history_stack.push(S.screen); goto(arg); },
+    back: function(){ var prev = history_stack.pop() || "home"; goto(prev); },
+    tab: function(arg){ history_stack=[]; goto(arg); },
+
+    setContactType: function(arg){ S.contactType=arg; render(); },
+
+    async resendOtp(){ toast("Демо-код отправлен повторно: 123456"); },
+
+    async verifyOtp(mode){
+      var code = (document.getElementById("f_otp")||{}).value || "";
+      clearErr();
+      if(code.trim()!=="123456"){ setErr("otp","Неверный код. В демо-режиме используйте 123456"); render(); return; }
+      if(mode==="register"){
+        var existing = await Store.findUserByContact(S.pendingReg.contact);
+        if(existing){ S.user = existing; }
+        else { S.user = await Store.createUser(S.pendingReg); }
+      } else {
+        var u = await Store.findUserByContact(S.pendingLoginContact);
+        if(!u){ setErr("otp","Пользователь не найден. Пройдите регистрацию."); render(); return; }
+        S.user = u;
+      }
+      try{ localStorage.setItem("entdayyn_uid", S.user.id); }catch(e){}
+      await afterLogin();
+      history_stack=[];
+      toast("Добро пожаловать, " + (S.user.fio ? S.user.fio.split(" ")[0] : "") + "!");
+      goto("home");
+    },
+
+    async noQuestions(){ toast("Вопросы по этой дисциплине появятся позже"); },
+
+    async selectDiscipline(arg){ S.disciplineId=arg; history_stack.push(S.screen); goto("levels"); },
+
+    async selectLevel(arg){
+      S.level = arg;
+      var qset = await Store.getQuestions(S.disciplineId, S.level);
+      if(!qset || !qset.items || !qset.items.length){ toast("Вопросы для этого уровня ещё не загружены"); return; }
+      S.quiz = { items: qset.items, index:0, answers:{}, startedAt:new Date().toISOString() };
+      history_stack.push(S.screen);
+      goto("quiz");
+    },
+
+    selectOption: function(qid, idx){
+      S.quiz.answers[qid] = parseInt(idx,10);
+      render();
+    },
+
+    gotoQuestion: function(arg){ S.quiz.index = parseInt(arg,10); render(); },
+    nextQuestion: function(){ if(S.quiz.index < S.quiz.items.length-1){ S.quiz.index++; render(); } },
+    prevQuestion: function(){ if(S.quiz.index > 0){ S.quiz.index--; render(); } },
+
+    finishPrompt: function(){
+      var total = S.quiz.items.length;
+      var answered = Object.keys(S.quiz.answers).length;
+      var msg = answered<total
+        ? "Отвечено на "+answered+" из "+total+" вопросов. Неотвеченные вопросы будут засчитаны как неверные. Завершить тест?"
+        : "Завершить тест и посмотреть результат?";
+      openModal(
+        '<h3>Завершить тест?</h3>'+
+        '<p class="muted" style="margin-bottom:18px; font-size:13.5px;">'+msg+'</p>'+
+        '<div class="gap-8">'+
+          '<button class="btn btn-primary" data-action="confirmFinish">Завершить</button>'+
+          '<button class="btn btn-ghost" data-action="closeModal">Продолжить тест</button>'+
+        '</div>'
+      );
+    },
+
+    closeModal: function(){ closeModal(); },
+    closeModalBg: function(arg,arg2,el){
+      if(el && el.id==="ov"){ closeModal(); }
+    },
+
+    async confirmFinish(){
+      closeModal();
+      var q = S.quiz;
+      var answers = q.items.map(function(it){
+        var sel = q.answers.hasOwnProperty(it.id) ? q.answers[it.id] : null;
+        return {
+          questionId: it.id, text:it.text, options:it.options, correctIndex:it.correctIndex,
+          selectedIndex: sel, isCorrect: sel===it.correctIndex
+        };
+      });
+      var correct = answers.filter(function(a){return a.isCorrect;}).length;
+      var total = answers.length;
+      var rec = {
+        userId:S.user.id, fio:S.user.fio,
+        disciplineId:S.disciplineId, disciplineName:disciplineName(S.disciplineId), level:S.level,
+        totalQuestions:total, correctCount:correct, wrongCount:total-correct,
+        answers:answers, startedAt:q.startedAt, finishedAt:new Date().toISOString(), emailPreviewShown:false
+      };
+      var saved = await Store.saveAttempt(rec);
+      S.lastResult = saved;
+      S.attempts = await Store.listAttempts(S.user.id);
+      history_stack=[];
+      goto("results");
+    },
+
+    toggleReview: function(arg){
+      var el = document.getElementById("rd_"+arg);
+      if(el) el.classList.toggle("open");
+    },
+
+    openEmailPreview: function(){
+      var body = emailBody(S.lastResult, S.user);
+      openModal(
+        '<h3>Предпросмотр письма (демо)</h3>'+
+        '<div class="email-preview">'+esc(body)+'</div>'+
+        '<p class="hint" style="margin-bottom:14px;">Это демонстрация содержимого письма. Реальная отправка на почту появится после подключения почтового сервиса.</p>'+
+        '<button class="btn btn-primary" data-action="closeModal">Понятно</button>'
+      );
+    },
+
+    retryQuiz: function(){
+      S.quiz = null;
+      history_stack=[];
+      goto("levels");
+    },
+
+    async openAttempt(arg){
+      var a = (S.attempts||[]).filter(function(x){return x.id===arg;})[0];
+      if(!a) return;
+      S.attemptDetail = a;
+      history_stack.push(S.screen);
+      goto("attemptDetail");
+    },
+
+    editProfile: function(){ S.profileEdit=true; render(); },
+    cancelEditProfile: function(){ S.profileEdit=false; render(); },
+
+    async logout(){
+      S.user=null; S.attempts=[]; S.pendingReg=null; history_stack=[];
+      try{ localStorage.removeItem("entdayyn_uid"); }catch(e){}
+      goto("authChoice");
+    }
+  };
+
+  /* ---- form submits ---- */
+
+  function validEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+  function validPhone(v){ return /^\+?\d[\d\s\-]{9,14}\d$/.test(v); }
+
+  document.addEventListener("submit", async function(e){
+    if(e.target.id==="registerForm"){
+      e.preventDefault();
+      clearErr();
+      var fio = document.getElementById("f_fio").value.trim();
+      var city = document.getElementById("f_city").value;
+      var goal = document.getElementById("f_goal").value;
+      var goalOtherEl = document.getElementById("f_goal_other");
+      var goalOther = goalOtherEl ? goalOtherEl.value.trim() : "";
+      var contact = document.getElementById("f_contact").value.trim();
+      var ok = true;
+      if(fio.length<3){ setErr("fio","Введите фамилию и имя полностью"); ok=false; }
+      if(S.contactType==="email" && !validEmail(contact)){ setErr("contact","Введите корректный e-mail"); ok=false; }
+      if(S.contactType==="phone" && !validPhone(contact)){ setErr("contact","Введите корректный номер телефона"); ok=false; }
+      if(!ok){ S.pendingReg={fio:fio,city:city,goal:goal,goalOther:goalOther,contact:contact}; render(); return; }
+      S.pendingReg = {
+        fio:fio, city:city, goal: goal==="Другое" && goalOther ? goalOther : goal, goalOther:goalOther,
+        contact:contact, contactType:S.contactType
+      };
+      toast("Демо-код отправлен: 123456");
+      history_stack.push(S.screen);
+      goto("registerOtp");
+    }
+    if(e.target.id==="loginForm"){
+      e.preventDefault();
+      clearErr();
+      var c = document.getElementById("f_login_contact").value.trim();
+      var ok2 = S.contactType==="email" ? validEmail(c) : validPhone(c);
+      if(!ok2){ setErr("contact","Введите корректные данные"); render(); return; }
+      S.pendingLoginContact = c;
+      toast("Демо-код отправлен: 123456");
+      history_stack.push(S.screen);
+      goto("loginOtp");
+    }
+    if(e.target.id==="profileForm"){
+      e.preventDefault();
+      var patch = {
+        fio: document.getElementById("p_fio").value.trim(),
+        city: document.getElementById("p_city").value,
+        goal: document.getElementById("p_goal").value
+      };
+      await Store.updateUser(S.user.id, patch);
+      Object.assign(S.user, patch);
+      S.profileEdit=false;
+      toast("Профиль обновлён");
+      render();
+    }
+  });
+
+  /* ---- click delegation ---- */
+
+  document.addEventListener("click", function(e){
+    var el = e.target.closest("[data-action]");
+    if(!el) return;
+    var action = el.dataset.action;
+    var fn = Actions[action];
+    if(typeof fn === "function"){
+      fn(el.dataset.arg, el.dataset.arg2, el);
+    }
+  });
+
+  /* ---- init / login restore ---- */
+
+  async function afterLogin(){
+    S.attempts = await Store.listAttempts(S.user.id);
+  }
+
+  async function init(){
+    await Store.init();
+    if(S._resumeUid){
+      try{
+        var found = await Store.getUserById(S._resumeUid);
+        if(found){
+          S.user = found;
+          await afterLogin();
+          S.screen="home";
+        }
+      }catch(e){}
+    }
+    render();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
