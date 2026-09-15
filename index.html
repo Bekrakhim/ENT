@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="ЕНТ Дайын — пробное тестирование по дисциплинам ЕНТ: регистрация, выбор дисциплины и уровня, прохождение теста и разбор результатов.">
+<meta name="description" content="ЕНТ Дайын — пробное тестирование по дисциплинам ЕНТ. Математика, история Казахстана, физика, химия, биология, всемирная история, английский язык.">
 <title>ЕНТ Дайын</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -394,6 +394,7 @@
 </style>
 </head>
 <body>
+
 <div class="stage">
   <div class="device" id="device">
     <div class="notch"></div>
@@ -426,12 +427,13 @@
     {id:"geography", name:"География",                     mono:"ГГ"},
     {id:"english",   name:"Английский язык",                mono:"АЯ"}
   ];
-  var HAS_QUESTIONS = {math:true, history_kz:true};
+  var HAS_QUESTIONS = {math:true, history_kz:true, physics:true, chemistry:true, biology:true, world_hist:true, english:true};
 
   var LEVELS = [
     {id:"easy",   name:"Лёгкий",   desc:"Базовые вопросы для разминки", color:"var(--success)"},
     {id:"medium", name:"Средний",  desc:"Уровень, близкий к экзамену",   color:"var(--gold-500)"},
-    {id:"hard",   name:"Сложный",  desc:"Повышенная сложность ЕНТ",      color:"var(--danger)"}
+    {id:"hard",   name:"Сложный",  desc:"Повышенная сложность ЕНТ",      color:"var(--danger)"},
+    {id:"official", name:"Реальные ЕНТ", desc:"Вопросы из официальных демоверсий НЦТ РК", color:"var(--azure-600)"}
   ];
 
   function opts(a,b,c,d,e){ return [a,b,c,d,e]; }
@@ -442,43 +444,370 @@
       {id:"m_e_2", text:"Решите уравнение: 3x − 7 = 14. Чему равен x?", options:opts("5","6","7","8","9"), correctIndex:2},
       {id:"m_e_3", text:"Периметр квадрата равен 36 см. Чему равна его сторона?", options:opts("6 см","7 см","8 см","9 см","10 см"), correctIndex:3},
       {id:"m_e_4", text:"Какое из чисел является простым?", options:opts("21","33","39","51","53"), correctIndex:4},
-      {id:"m_e_5", text:"Вычислите: (8 + 12) ÷ 4", options:opts("3","4","5","6","7"), correctIndex:2}
+      {id:"m_e_5", text:"Вычислите: (8 + 12) ÷ 4", options:opts("3","4","5","6","7"), correctIndex:2},
+      {id:"m_e_6", text:"Округлите число 4.837 до сотых", options:opts("4.83","4.84","4.8","4.9","4.837"), correctIndex:1},
+      {id:"m_e_7", text:"Из 30 учеников класса 12 — мальчики. Сколько процентов класса составляют мальчики?", options:opts("30%","35%","40%","45%","50%"), correctIndex:2},
+      {id:"m_e_8", text:"Найдите значение выражения: 2³ + 3²", options:opts("15","16","17","18","19"), correctIndex:2}
     ]},
     "math_medium": {disciplineId:"math", disciplineName:"Математика", level:"medium", items:[
       {id:"m_m_1", text:"Найдите корни уравнения x² − 5x + 6 = 0", options:opts("1 и 6","2 и 3","−2 и −3","1 и 5","3 и 4"), correctIndex:1},
       {id:"m_m_2", text:"Чему равен log₂32?", options:opts("3","4","5","6","7"), correctIndex:2},
       {id:"m_m_3", text:"Площадь круга радиусом 7 (π ≈ 22/7)", options:opts("132","154","176","198","210"), correctIndex:1},
       {id:"m_m_4", text:"В арифметической прогрессии a₁ = 3, d = 4. Найдите a₁₀.", options:opts("36","37","38","39","40"), correctIndex:3},
-      {id:"m_m_5", text:"Производная функции f(x) = x³ − 2x равна", options:opts("3x² − 2","3x²","x² − 2","3x − 2","3x² − 2x"), correctIndex:0}
+      {id:"m_m_5", text:"Производная функции f(x) = x³ − 2x равна", options:opts("3x² − 2","3x²","x² − 2","3x − 2","3x² − 2x"), correctIndex:0},
+      {id:"m_m_6", text:"Упростите выражение: (a+b)² − (a−b)²", options:opts("4ab","2ab","a²+b²","4a²","4b²"), correctIndex:0},
+      {id:"m_m_7", text:"Найдите область определения функции f(x) = √(x − 3)", options:opts("x ≥ 3","x ≤ 3","x > 3","x < 3","x ≠ 3"), correctIndex:0},
+      {id:"m_m_8", text:"Чему равен синус угла 30°?", options:opts("1/2","√2/2","√3/2","1","0"), correctIndex:0}
     ]},
     "math_hard": {disciplineId:"math", disciplineName:"Математика", level:"hard", items:[
       {id:"m_h_1", text:"Решите неравенство: x² − 4x − 5 < 0", options:opts("(−1; 5)","(−5; 1)","(1; 5)","(−∞;−1)∪(5;+∞)","(−5;−1)"), correctIndex:0},
       {id:"m_h_2", text:"Вычислите предел lim(x→0) sin(3x)/x", options:opts("0","1","3","1/3","∞"), correctIndex:2},
       {id:"m_h_3", text:"Сколько решений имеет уравнение cos x = x на отрезке [0; π]?", options:opts("0","1","2","3","бесконечно много"), correctIndex:1},
       {id:"m_h_4", text:"Матрица A размером 3×4, матрица B размером 4×2. Каков размер произведения AB?", options:opts("3×2","4×4","2×3","3×4","4×2"), correctIndex:0},
-      {id:"m_h_5", text:"Сумма первых 20 членов геометрической прогрессии b₁ = 1, q = 2 равна", options:opts("2²⁰ − 1","2¹⁹ − 1","2²⁰","2²¹ − 1","2¹⁹"), correctIndex:0}
+      {id:"m_h_5", text:"Сумма первых 20 членов геометрической прогрессии b₁ = 1, q = 2 равна", options:opts("2²⁰ − 1","2¹⁹ − 1","2²⁰","2²¹ − 1","2¹⁹"), correctIndex:0},
+      {id:"m_h_6", text:"Найдите производную функции f(x) = ln(x² + 1)", options:opts("2x/(x²+1)","1/(x²+1)","2x","x/(x²+1)","2/(x²+1)"), correctIndex:0},
+      {id:"m_h_7", text:"Решите уравнение: 2^(x+1) = 16", options:opts("2","3","4","5","6"), correctIndex:1},
+      {id:"m_h_8", text:"Вычислите определённый интеграл ∫₀¹ 2x dx", options:opts("0","1","2","1/2","3"), correctIndex:1}
     ]},
     "history_kz_easy": {disciplineId:"history_kz", disciplineName:"История Казахстана", level:"easy", items:[
       {id:"h_e_1", text:"В каком году была принята действующая Конституция Республики Казахстан?", options:opts("1991","1993","1995","1997","2000"), correctIndex:2},
       {id:"h_e_2", text:"Кто был избран первым Президентом Республики Казахстан?", options:opts("Н. Назарбаев","К. Токаев","Д. Кунаев","Ш. Уалиханов","А. Кунанбаев"), correctIndex:0},
       {id:"h_e_3", text:"Какой хан считается одним из основателей Казахского ханства вместе с Кереем?", options:opts("Жанибек хан","Абылай хан","Кенесары хан","Тауке хан","Аблай хан"), correctIndex:0},
       {id:"h_e_4", text:"Какой год считается годом образования Казахского ханства?", options:opts("1465","1456","1470","1480","1500"), correctIndex:0},
-      {id:"h_e_5", text:"Что является государственным языком Республики Казахстан?", options:opts("Русский","Казахский","Английский","Казахский и русский","Единого гос. языка нет"), correctIndex:1}
+      {id:"h_e_5", text:"Что является государственным языком Республики Казахстан?", options:opts("Русский","Казахский","Английский","Казахский и русский","Единого гос. языка нет"), correctIndex:1},
+      {id:"h_e_6", text:"Как называется денежная единица Республики Казахстан?", options:opts("Тенге","Сом","Рубль","Манат","Драм"), correctIndex:0},
+      {id:"h_e_7", text:"В каком году Казахстан стал членом ООН?", options:opts("1990","1991","1992","1993","1995"), correctIndex:2},
+      {id:"h_e_8", text:"Национальный праздник Наурыз отмечается:", options:opts("21 марта","1 мая","16 декабря","25 октября","7 ноября"), correctIndex:0}
     ]},
     "history_kz_medium": {disciplineId:"history_kz", disciplineName:"История Казахстана", level:"medium", items:[
       {id:"h_m_1", text:"«Жеты Жаргы» — это:", options:opts("свод законов при Тауке хане","военный союз","торговый путь","поэтический эпос","налоговая система"), correctIndex:0},
       {id:"h_m_2", text:"Восстание под руководством Кенесары Касымова проходило в:", options:opts("1783–1797","1837–1847","1850–1860","1916","1929"), correctIndex:1},
       {id:"h_m_3", text:"Переход казахов к оседлости в советский период связан с политикой:", options:opts("коллективизации","индустриализации","культурной революции","военного коммунизма","НЭПа"), correctIndex:0},
       {id:"h_m_4", text:"Какое событие произошло в Казахстане в декабре 1986 года?", options:opts("Желтоксан","Целинная кампания","Семипалатинские испытания","Ашаршылык","Перенос столицы"), correctIndex:0},
-      {id:"h_m_5", text:"Абай Кунанбаев известен как:", options:opts("хан","батыр","просветитель и поэт","полководец","путешественник"), correctIndex:2}
+      {id:"h_m_5", text:"Абай Кунанбаев известен как:", options:opts("хан","батыр","просветитель и поэт","полководец","путешественник"), correctIndex:2},
+      {id:"h_m_6", text:"Что означает термин «Ассамблея народа Казахстана»?", options:opts("консультативно-совещательный орган по межэтническим отношениям","высший судебный орган","орган местного самоуправления","военный совет","парламентская партия"), correctIndex:0},
+      {id:"h_m_7", text:"Первая Конституция Казахской ССР была принята в:", options:opts("1926","1937","1978","1993","1995"), correctIndex:1},
+      {id:"h_m_8", text:"Целинная кампания в Казахстане началась в:", options:opts("1954","1956","1960","1965","1970"), correctIndex:0}
     ]},
     "history_kz_hard": {disciplineId:"history_kz", disciplineName:"История Казахстана", level:"hard", items:[
       {id:"h_h_1", text:"Начало голода (Ашаршылык), связанного с насильственной коллективизацией, принято отнести к:", options:opts("1921","1928","1930","1932","1937"), correctIndex:2},
       {id:"h_h_2", text:"Семипалатинский ядерный полигон был официально закрыт в:", options:opts("1989","1991","1993","1995","1996"), correctIndex:1},
       {id:"h_h_3", text:"Н. Назарбаев объявил о переносе столицы из Алматы в Акмолу в:", options:opts("1994","1995","1996","1997","1998"), correctIndex:3},
       {id:"h_h_4", text:"Кто был одним из лидеров партии Алаш и движения Алаш-Орда?", options:opts("Алихан Букейханов","Динмухамед Кунаев","Нурсултан Назарбаев","Касым-Жомарт Токаев","Жамбыл Жабаев"), correctIndex:0},
-      {id:"h_h_5", text:"Казахстан подписал Договор о нераспространении ядерного оружия в:", options:opts("1992","1993","1994","1995","1996"), correctIndex:2}
-    ]}
+      {id:"h_h_5", text:"Казахстан подписал Договор о нераспространении ядерного оружия в:", options:opts("1992","1993","1994","1995","1996"), correctIndex:2},
+      {id:"h_h_6", text:"Декларация о государственном суверенитете Казахской ССР была принята:", options:opts("25 октября 1990","16 декабря 1991","10 декабря 1991","1 декабря 1991","5 октября 1990"), correctIndex:0},
+      {id:"h_h_7", text:"Год председательства Казахстана в ОБСЕ:", options:opts("2008","2010","2012","2014","2016"), correctIndex:1},
+      {id:"h_h_8", text:"Программа «Рухани жаңғыру» была инициирована в:", options:opts("2015","2017","2019","2020","2021"), correctIndex:1}
+    ]},
+    "physics_easy": {disciplineId:"physics", disciplineName:"Физика", level:"easy", items:[
+      {id:"ph_e_1", text:"Единица измерения силы в СИ:", options:opts("Ньютон","Джоуль","Ватт","Паскаль","Кулон"), correctIndex:0},
+      {id:"ph_e_2", text:"Формула скорости при равномерном движении:", options:opts("v = s/t","v = s·t","v = t/s","v = s + t","v = s − t"), correctIndex:0},
+      {id:"ph_e_3", text:"Чему равно ускорение свободного падения (округлённо)?", options:opts("9.8 м/с²","3.8 м/с²","6.8 м/с²","12.8 м/с²","1.8 м/с²"), correctIndex:0},
+      {id:"ph_e_4", text:"Какая величина измеряется в омах?", options:opts("Сопротивление","Сила тока","Напряжение","Мощность","Заряд"), correctIndex:0},
+      {id:"ph_e_5", text:"Тело массой 2 кг покоится на высоте 5 м. Чему равна его потенциальная энергия (g = 10 м/с²)?", options:opts("50 Дж","100 Дж","150 Дж","200 Дж","10 Дж"), correctIndex:1},
+      {id:"ph_e_6", text:"Свет распространяется в вакууме со скоростью примерно:", options:opts("300 000 км/с","150 000 км/с","3 000 км/с","30 000 км/с","3 000 000 км/с"), correctIndex:0},
+      {id:"ph_e_7", text:"Какой прибор измеряет силу тока?", options:opts("Амперметр","Вольтметр","Манометр","Термометр","Барометр"), correctIndex:0},
+      {id:"ph_e_8", text:"Агрегатное состояние вещества, при котором сохраняется и форма, и объём:", options:opts("Твёрдое","Жидкое","Газообразное","Плазма","Аморфное"), correctIndex:0}
+    ]},
+    "physics_medium": {disciplineId:"physics", disciplineName:"Физика", level:"medium", items:[
+      {id:"ph_m_1", text:"Тело брошено вертикально вверх со скоростью 20 м/с. Через сколько секунд оно достигнет максимальной высоты (g = 10 м/с²)?", options:opts("1 с","2 с","3 с","4 с","5 с"), correctIndex:1},
+      {id:"ph_m_2", text:"Закон Ома для участка цепи:", options:opts("I = U/R","I = U·R","I = R/U","U = I + R","R = I + U"), correctIndex:0},
+      {id:"ph_m_3", text:"Автомобиль движется со скоростью 72 км/ч. Чему это равно в м/с?", options:opts("10 м/с","15 м/с","20 м/с","25 м/с","30 м/с"), correctIndex:2},
+      {id:"ph_m_4", text:"Какая сила действует на тело массой 5 кг с ускорением 2 м/с²?", options:opts("5 Н","10 Н","15 Н","20 Н","25 Н"), correctIndex:1},
+      {id:"ph_m_5", text:"Два резистора по 4 Ом соединены последовательно. Каково общее сопротивление?", options:opts("2 Ом","4 Ом","6 Ом","8 Ом","16 Ом"), correctIndex:3},
+      {id:"ph_m_6", text:"Период колебаний маятника зависит от:", options:opts("длины нити и ускорения свободного падения","массы груза","амплитуды колебаний","цвета груза","материала нити"), correctIndex:0},
+      {id:"ph_m_7", text:"Механическая работа вычисляется по формуле:", options:opts("A = F·s","A = F/s","A = F + s","A = m·v","A = m·a"), correctIndex:0},
+      {id:"ph_m_8", text:"Какова мощность, если работа 200 Дж совершена за 4 с?", options:opts("20 Вт","50 Вт","100 Вт","200 Вт","800 Вт"), correctIndex:1}
+    ]},
+    "physics_hard": {disciplineId:"physics", disciplineName:"Физика", level:"hard", items:[
+      {id:"ph_h_1", text:"Тело массой 1000 кг движется со скоростью 20 м/с. Чему равна его кинетическая энергия?", options:opts("100 кДж","150 кДж","200 кДж","250 кДж","300 кДж"), correctIndex:2},
+      {id:"ph_h_2", text:"Закон сохранения импульса применим для:", options:opts("замкнутой системы тел","любой системы тел","только для одного тела","только при трении","только в вакууме"), correctIndex:0},
+      {id:"ph_h_3", text:"Формула для расчёта периода колебаний математического маятника:", options:opts("T = 2π√(l/g)","T = 2π√(g/l)","T = 2πl/g","T = 2π·l·g","T = l/g"), correctIndex:0},
+      {id:"ph_h_4", text:"Конденсатор ёмкостью 2 Ф заряжен до напряжения 5 В. Чему равен заряд?", options:opts("5 Кл","10 Кл","15 Кл","20 Кл","2.5 Кл"), correctIndex:1},
+      {id:"ph_h_5", text:"Какая волна является поперечной?", options:opts("электромагнитная","звуковая в воздухе","звуковая в жидкости","ударная волна","продольная волна в пружине"), correctIndex:0},
+      {id:"ph_h_6", text:"Уравнение Менделеева–Клапейрона связывает:", options:opts("давление, объём, температуру и количество вещества газа","только давление и объём","только температуру и объём","силу и ускорение","заряд и напряжение"), correctIndex:0},
+      {id:"ph_h_7", text:"Фотоэффект объясняется:", options:opts("квантовой природой света","исключительно волновой природой света","гравитацией","магнитным полем","тепловым излучением"), correctIndex:0},
+      {id:"ph_h_8", text:"Чему равен КПД идеальной тепловой машины при температуре нагревателя 500 К и холодильника 300 К?", options:opts("20%","30%","40%","50%","60%"), correctIndex:2}
+    ]},
+    "chemistry_easy": {disciplineId:"chemistry", disciplineName:"Химия", level:"easy", items:[
+      {id:"ch_e_1", text:"Химический символ кислорода:", options:opts("O","O2","Ox","Ok","On"), correctIndex:0},
+      {id:"ch_e_2", text:"Сколько протонов в атоме водорода?", options:opts("1","2","3","0","4"), correctIndex:0},
+      {id:"ch_e_3", text:"Формула воды:", options:opts("H2O","H2O2","HO2","H3O","HO"), correctIndex:0},
+      {id:"ch_e_4", text:"Какой газ выделяется при горении?", options:opts("Углекислый газ","Азот","Водород","Гелий","Неон"), correctIndex:0},
+      {id:"ch_e_5", text:"Какой металл является жидким при комнатной температуре?", options:opts("Ртуть","Железо","Медь","Алюминий","Цинк"), correctIndex:0},
+      {id:"ch_e_6", text:"Какая частица имеет отрицательный заряд?", options:opts("Электрон","Протон","Нейтрон","Ядро","Атом"), correctIndex:0},
+      {id:"ch_e_7", text:"Формула поваренной соли:", options:opts("NaCl","KCl","CaCl2","NaOH","Na2CO3"), correctIndex:0},
+      {id:"ch_e_8", text:"Кислотность среды определяется показателем:", options:opts("pH","pOH","ЭДС","СИ","моль"), correctIndex:0}
+    ]},
+    "chemistry_medium": {disciplineId:"chemistry", disciplineName:"Химия", level:"medium", items:[
+      {id:"ch_m_1", text:"Сколько атомов кислорода в молекуле серной кислоты H2SO4?", options:opts("2","3","4","5","1"), correctIndex:2},
+      {id:"ch_m_2", text:"Реакция нейтрализации — это взаимодействие:", options:opts("кислоты и основания","металла и кислорода","соли и воды","двух металлов","газа и жидкости"), correctIndex:0},
+      {id:"ch_m_3", text:"Молярная масса воды H2O равна (г/моль):", options:opts("16","18","20","22","24"), correctIndex:1},
+      {id:"ch_m_4", text:"Какой тип связи в молекуле NaCl?", options:opts("ионная","ковалентная неполярная","ковалентная полярная","металлическая","водородная"), correctIndex:0},
+      {id:"ch_m_5", text:"Число Авогадро используется для:", options:opts("определения количества частиц в моле вещества","измерения температуры","измерения давления","измерения объёма газа только","определения плотности"), correctIndex:0},
+      {id:"ch_m_6", text:"Какой класс неорганических соединений образует CaO при реакции с водой?", options:opts("Основание","Кислота","Соль","Оксид","Ангидрид"), correctIndex:0},
+      {id:"ch_m_7", text:"Валентность углерода в органических соединениях, как правило:", options:opts("IV","I","II","III","V"), correctIndex:0},
+      {id:"ch_m_8", text:"Продукты реакции горения метана: CH4 + 2O2 →", options:opts("CO2 + 2H2O","CO + H2O","C + H2O","CO2 + H2","2CO2 + H2O"), correctIndex:0}
+    ]},
+    "chemistry_hard": {disciplineId:"chemistry", disciplineName:"Химия", level:"hard", items:[
+      {id:"ch_h_1", text:"Сколько граммов составляет 2 моль углекислого газа CO2 (M = 44 г/моль)?", options:opts("44 г","66 г","88 г","100 г","110 г"), correctIndex:2},
+      {id:"ch_h_2", text:"Какая степень окисления у серы в H2SO4?", options:opts("+6","+4","+2","−2","0"), correctIndex:0},
+      {id:"ch_h_3", text:"Скорость химической реакции зависит от:", options:opts("концентрации, температуры, катализатора","только цвета вещества","только массы сосуда","только влажности воздуха","только освещения"), correctIndex:0},
+      {id:"ch_h_4", text:"Уравнение Менделеева для газов используется при расчёте:", options:opts("количества вещества газа через давление, объём, температуру","массы твёрдого тела","плотности раствора","температуры плавления","заряда иона"), correctIndex:0},
+      {id:"ch_h_5", text:"Какой объём (л, н.у.) занимает 1 моль идеального газа?", options:opts("22.4 л","11.2 л","44.8 л","1 л","10 л"), correctIndex:0},
+      {id:"ch_h_6", text:"Гидролиз соли слабой кислоты и сильного основания даёт среду:", options:opts("щелочную","кислую","нейтральную","амфотерную","переменную"), correctIndex:0},
+      {id:"ch_h_7", text:"Изотопы отличаются друг от друга:", options:opts("числом нейтронов","числом протонов","зарядом ядра","числом электронов","химическими свойствами"), correctIndex:0},
+      {id:"ch_h_8", text:"Какая реакция называется экзотермической?", options:opts("протекающая с выделением теплоты","протекающая с поглощением теплоты","не изменяющая температуру","только реакция горения","только реакция разложения"), correctIndex:0}
+    ]},
+    "biology_easy": {disciplineId:"biology", disciplineName:"Биология", level:"easy", items:[
+      {id:"bi_e_1", text:"Основная структурная единица живого организма:", options:opts("Клетка","Ткань","Орган","Система органов","Организм"), correctIndex:0},
+      {id:"bi_e_2", text:"Процесс, при котором растения производят кислород и органические вещества из CO2 и воды на свету:", options:opts("Фотосинтез","Дыхание","Транспирация","Брожение","Осмос"), correctIndex:0},
+      {id:"bi_e_3", text:"Орган дыхания человека:", options:opts("Лёгкие","Печень","Почки","Желудок","Сердце"), correctIndex:0},
+      {id:"bi_e_4", text:"ДНК находится преимущественно в:", options:opts("Ядре клетки","Только в митохондрии","Только в цитоплазме","Клеточной стенке","Рибосоме"), correctIndex:0},
+      {id:"bi_e_5", text:"Какое царство объединяет грибы?", options:opts("Грибы (Fungi)","Растения","Животные","Бактерии","Простейшие"), correctIndex:0},
+      {id:"bi_e_6", text:"Сколько камер в сердце человека?", options:opts("4","2","3","5","6"), correctIndex:0},
+      {id:"bi_e_7", text:"Процесс деления соматических клеток называется:", options:opts("Митоз","Мейоз","Оплодотворение","Гаметогенез","Апоптоз"), correctIndex:0},
+      {id:"bi_e_8", text:"Основной пигмент, придающий растениям зелёный цвет:", options:opts("Хлорофилл","Каротин","Меланин","Гемоглобин","Ксантофилл"), correctIndex:0}
+    ]},
+    "biology_medium": {disciplineId:"biology", disciplineName:"Биология", level:"medium", items:[
+      {id:"bi_m_1", text:"Процесс полового размножения, при котором образуются гаметы:", options:opts("Мейоз","Митоз","Фотосинтез","Гликолиз","Транскрипция"), correctIndex:0},
+      {id:"bi_m_2", text:"Какой органоид клетки отвечает за синтез белка?", options:opts("Рибосома","Митохондрия","Лизосома","Аппарат Гольджи","Вакуоль"), correctIndex:0},
+      {id:"bi_m_3", text:"Группа крови, являющаяся универсальным донором:", options:opts("I (0)","II (A)","III (B)","IV (AB)","Резус-отрицательная III"), correctIndex:0},
+      {id:"bi_m_4", text:"Гормон, регулирующий уровень глюкозы в крови, вырабатываемый поджелудочной железой:", options:opts("Инсулин","Адреналин","Тироксин","Эстроген","Тестостерон"), correctIndex:0},
+      {id:"bi_m_5", text:"Какой процесс обеспечивает передачу наследственной информации от родителей к потомкам?", options:opts("Наследственность","Изменчивость","Мутация","Адаптация","Селекция"), correctIndex:0},
+      {id:"bi_m_6", text:"Основная функция эритроцитов:", options:opts("Перенос кислорода","Свёртывание крови","Борьба с инфекциями","Выработка антител","Транспорт гормонов"), correctIndex:0},
+      {id:"bi_m_7", text:"Растения поглощают воду и минеральные вещества через:", options:opts("Корни","Листья","Стебель","Цветки","Плоды"), correctIndex:0},
+      {id:"bi_m_8", text:"Какой процесс происходит в митохондриях?", options:opts("Клеточное дыхание","Фотосинтез","Синтез белка","Деление клетки","Пассивный транспорт веществ"), correctIndex:0}
+    ]},
+    "biology_hard": {disciplineId:"biology", disciplineName:"Биология", level:"hard", items:[
+      {id:"bi_h_1", text:"Согласно закону Менделя, при скрещивании двух гетерозигот Aa × Aa какое соотношение генотипов в потомстве?", options:opts("1AA:2Aa:1aa","1AA:1aa","3AA:1aa","2AA:1Aa:1aa","1AA:3aa"), correctIndex:0},
+      {id:"bi_h_2", text:"Какой процесс лежит в основе эволюции по Дарвину?", options:opts("Естественный отбор","Только мутации","Только дрейф генов","Только изоляция","Только миграция"), correctIndex:0},
+      {id:"bi_h_3", text:"Фермент, расщепляющий крахмал в ротовой полости:", options:opts("Амилаза","Липаза","Пепсин","Трипсин","Мальтаза"), correctIndex:0},
+      {id:"bi_h_4", text:"Какая структура обеспечивает передачу нервного импульса между нейронами?", options:opts("Синапс","Аксон","Дендрит","Миелин","Нейрон"), correctIndex:0},
+      {id:"bi_h_5", text:"Тип деления клетки, приводящий к образованию гамет с гаплоидным набором хромосом:", options:opts("Мейоз","Митоз","Амитоз","Эндомитоз","Шизогония"), correctIndex:0},
+      {id:"bi_h_6", text:"Какой цикл описывает превращение веществ в экосистеме?", options:opts("Круговорот веществ","Только цепь питания","Только пищевая пирамида","Сукцессия","Гомеостаз"), correctIndex:0},
+      {id:"bi_h_7", text:"Согласно теории Дарвина, движущей силой эволюции является:", options:opts("Борьба за существование и естественный отбор","Упражнение и неупражнение органов","Прямое приспособление","Божественное творение","Случайность без отбора"), correctIndex:0},
+      {id:"bi_h_8", text:"Какой процесс обеспечивает генетическое разнообразие при половом размножении?", options:opts("Кроссинговер и независимое расхождение хромосом","Митоз","Апоптоз","Транскрипция","Трансляция"), correctIndex:0}
+    ]},
+    "world_hist_easy": {disciplineId:"world_hist", disciplineName:"Всемирная история", level:"easy", items:[
+      {id:"w_e_1", text:"В каком году началась Первая мировая война?", options:opts("1914","1912","1916","1918","1920"), correctIndex:0},
+      {id:"w_e_2", text:"Древний город-государство, давший начало Олимпийским играм:", options:opts("Афины (Греция)","Рим","Карфаген","Спарта","Троя"), correctIndex:0},
+      {id:"w_e_3", text:"Кто открыл Америку в 1492 году?", options:opts("Христофор Колумб","Васко да Гама","Фернан Магеллан","Америго Веспуччи","Марко Поло"), correctIndex:0},
+      {id:"w_e_4", text:"В каком году закончилась Вторая мировая война?", options:opts("1945","1943","1944","1946","1947"), correctIndex:0},
+      {id:"w_e_5", text:"Какая цивилизация построила пирамиды в Гизе?", options:opts("Древний Египет","Древний Рим","Древняя Греция","Персия","Вавилон"), correctIndex:0},
+      {id:"w_e_6", text:"Великая французская революция началась в:", options:opts("1789","1799","1804","1776","1815"), correctIndex:0},
+      {id:"w_e_7", text:"Кто был первым императором Рима?", options:opts("Октавиан Август","Юлий Цезарь","Нерон","Константин","Траян"), correctIndex:0},
+      {id:"w_e_8", text:"Великий шёлковый путь связывал:", options:opts("Восточную Азию и Европу","Африку и Австралию","Северную и Южную Америку","только Индию и Китай","Европу и Антарктиду"), correctIndex:0}
+    ]},
+    "world_hist_medium": {disciplineId:"world_hist", disciplineName:"Всемирная история", level:"medium", items:[
+      {id:"w_m_1", text:"Столетняя война велась между:", options:opts("Англией и Францией","Испанией и Португалией","Германией и Австрией","Россией и Швецией","Италией и Австрией"), correctIndex:0},
+      {id:"w_m_2", text:"Реформация в Европе связана с именем:", options:opts("Мартина Лютера","Наполеона Бонапарта","Отто фон Бисмарка","Уинстона Черчилля","Карла Великого"), correctIndex:0},
+      {id:"w_m_3", text:"Октябрьская революция в России произошла в:", options:opts("1917","1905","1914","1921","1924"), correctIndex:0},
+      {id:"w_m_4", text:"Какое событие считается началом Холодной войны?", options:opts("Фултонская речь Черчилля (1946)","Падение Берлинской стены","Карибский кризис","Основание ООН","Ялтинская конференция"), correctIndex:0},
+      {id:"w_m_5", text:"Промышленная революция началась в:", options:opts("Великобритании","Франции","Германии","США","России"), correctIndex:0},
+      {id:"w_m_6", text:"Версальский договор был подписан по итогам:", options:opts("Первой мировой войны","Второй мировой войны","Наполеоновских войн","Крымской войны","Столетней войны"), correctIndex:0},
+      {id:"w_m_7", text:"Какая империя была крупнейшей по территории в истории?", options:opts("Британская империя","Монгольская империя","Римская империя","Османская империя","Российская империя"), correctIndex:0},
+      {id:"w_m_8", text:"Организация Объединённых Наций была основана в:", options:opts("1945","1918","1939","1950","1960"), correctIndex:0}
+    ]},
+    "world_hist_hard": {disciplineId:"world_hist", disciplineName:"Всемирная история", level:"hard", items:[
+      {id:"w_h_1", text:"Вестфальский мир 1648 года завершил:", options:opts("Тридцатилетнюю войну","Столетнюю войну","Наполеоновские войны","Первую мировую войну","Религиозные войны во Франции"), correctIndex:0},
+      {id:"w_h_2", text:"Карибский кризис произошёл в:", options:opts("1962","1958","1965","1970","1955"), correctIndex:0},
+      {id:"w_h_3", text:"Какое событие стало непосредственным поводом к началу Первой мировой войны?", options:opts("Убийство эрцгерцога Франца Фердинанда","Захват Польши","Революция в России","Падение Константинополя","Крымская война"), correctIndex:0},
+      {id:"w_h_4", text:"Бреттон-Вудская система, созданная в 1944 году, регулировала:", options:opts("международную валютно-финансовую систему","колониальные границы","военные союзы","торговлю рабами","морское право"), correctIndex:0},
+      {id:"w_h_5", text:"Какая держава первой провела успешное испытание ядерного оружия?", options:opts("США","СССР","Германия","Великобритания","Франция"), correctIndex:0},
+      {id:"w_h_6", text:"Деколонизация Африки в основном пришлась на:", options:opts("1950–1960-е годы","1900–1910-е годы","1980–1990-е годы","1920–1930-е годы","2000-е годы"), correctIndex:0},
+      {id:"w_h_7", text:"Пражская весна произошла в:", options:opts("1968","1956","1980","1991","1975"), correctIndex:0},
+      {id:"w_h_8", text:"Какой договор оформил распад Австро-Венгрии после Первой мировой войны?", options:opts("Сен-Жерменский и Трианонский договоры","Версальский договор","Брестский мир","Севрский договор","Лозаннский договор"), correctIndex:0}
+    ]},
+    "english_easy": {disciplineId:"english", disciplineName:"Английский язык", level:"easy", items:[
+      {id:"en_e_1", text:"Choose the correct form: \"She ___ to school every day.\"", options:opts("goes","go","going","gone","went"), correctIndex:0},
+      {id:"en_e_2", text:"What is the plural of \"child\"?", options:opts("children","childs","childes","childrens","child"), correctIndex:0},
+      {id:"en_e_3", text:"Choose the correct article: \"___ apple a day keeps the doctor away.\"", options:opts("An","A","The","No article","Some"), correctIndex:0},
+      {id:"en_e_4", text:"What is the opposite of \"big\"?", options:opts("small","tall","wide","long","heavy"), correctIndex:0},
+      {id:"en_e_5", text:"Choose the correct past tense of \"go\":", options:opts("went","goed","gone","going","goes"), correctIndex:0},
+      {id:"en_e_6", text:"\"I ___ a student.\"", options:opts("am","is","are","be","been"), correctIndex:0},
+      {id:"en_e_7", text:"Which word is a synonym for \"happy\"?", options:opts("glad","sad","angry","tired","bored"), correctIndex:0},
+      {id:"en_e_8", text:"Choose the correct question word: \"___ is your name?\"", options:opts("What","Who","Where","When","Why"), correctIndex:0}
+    ]},
+    "english_medium": {disciplineId:"english", disciplineName:"Английский язык", level:"medium", items:[
+      {id:"en_m_1", text:"Choose the correct conditional: \"If it rains, I ___ stay home.\"", options:opts("will","would","was","did","am"), correctIndex:0},
+      {id:"en_m_2", text:"Choose the correct passive form: \"The letter ___ by John yesterday.\"", options:opts("was written","wrote","is written","has written","writes"), correctIndex:0},
+      {id:"en_m_3", text:"Which sentence uses the Present Perfect correctly?", options:opts("I have visited Paris twice.","I have visit Paris twice.","I has visited Paris twice.","I visiting Paris twice.","I am visited Paris twice."), correctIndex:0},
+      {id:"en_m_4", text:"Choose the correct comparative: \"This book is ___ than that one.\"", options:opts("more interesting","interestinger","most interesting","interesting","more interesting than"), correctIndex:0},
+      {id:"en_m_5", text:"Choose the correct modal verb: \"You ___ see a doctor if you feel ill.\"", options:opts("should","can","will","do","are"), correctIndex:0},
+      {id:"en_m_6", text:"Which word is a preposition?", options:opts("under","quickly","beautiful","run","happy"), correctIndex:0},
+      {id:"en_m_7", text:"Choose the correct reported speech: He said, \"I am tired.\" → He said that he ___ tired.", options:opts("was","is","were","has been","be"), correctIndex:0},
+      {id:"en_m_8", text:"Choose the correct form: \"Neither of the students ___ ready.\"", options:opts("is","are","were","have been","being"), correctIndex:0}
+    ]},
+    "english_hard": {disciplineId:"english", disciplineName:"Английский язык", level:"hard", items:[
+      {id:"en_h_1", text:"Choose the correct sentence with inversion:", options:opts("Never have I seen such a beautiful place.","Never I have seen such a beautiful place.","I never have seen such a beautiful place.","Never I saw such a beautiful place.","Have never I seen such a beautiful place."), correctIndex:0},
+      {id:"en_h_2", text:"Choose the correct third conditional: \"If she had studied harder, she ___ the exam.\"", options:opts("would have passed","would pass","will pass","passed","passes"), correctIndex:0},
+      {id:"en_h_3", text:"Identify the correct use of the subjunctive mood:", options:opts("I suggest that he be more careful.","I suggest that he is more careful.","I suggest that he was more careful.","I suggest he being careful.","I suggest that he will be careful."), correctIndex:0},
+      {id:"en_h_4", text:"Choose the sentence with correct use of a gerund:", options:opts("I enjoy reading books.","I enjoy to read books.","I enjoy read books.","I enjoy reads books.","I enjoy readed books."), correctIndex:0},
+      {id:"en_h_5", text:"Choose the correct phrasal verb meaning \"to postpone\":", options:opts("put off","put on","put up","put down","put out"), correctIndex:0},
+      {id:"en_h_6", text:"Which sentence correctly uses a relative clause?", options:opts("The book, which I bought yesterday, is interesting.","The book, that I bought yesterday, is interesting.","The book which I bought yesterday is interesting,","The book, who I bought yesterday, is interesting.","The book I bought, yesterday is interesting."), correctIndex:0},
+      {id:"en_h_7", text:"Choose the correct form: \"By next year, she ___ here for a decade.\"", options:opts("will have worked","will work","has worked","will be working","worked"), correctIndex:0},
+      {id:"en_h_8", text:"Choose the correct idiom meaning \"to give up\":", options:opts("throw in the towel","throw the towel in the ring","throw a towel","throw up a towel","throw down a towel"), correctIndex:0}
+    ]},
+    "math_official": {disciplineId:"math", disciplineName:"Математика", level:"official", items:[
+      {id:"m_off_1", text:"Решите систему уравнений: 3x+8y=43, 4x-y=34", options:["(9; 2)","(8; 4)","(5; 3)","(7; 5)"], correctIndex:0},
+      {id:"m_off_2", text:"Радиус конуса увеличили в три раза. Во сколько раз увеличился объем конуса?", options:["в 3 раза","в 27 раз","в 9 раз","в 18 раз"], correctIndex:2},
+      {id:"m_off_3", text:"Арифметическая прогрессия 6; 8; 10… и геометрическая прогрессия 1; 2; 4;… имеют по 61 члену. Сколько одинаковых членов в обеих прогрессиях?", options:["5","6","3","4"], correctIndex:3}
+    ]},
+    "history_kz_official": {disciplineId:"history_kz", disciplineName:"История Казахстана", level:"official", items:[
+      {id:"hkz_off_1", text:"В середине IV века до границ Римской империи дошли", options:["карлуки","гунны","кидани","саки"], correctIndex:1},
+      {id:"hkz_off_2", text:"Объединенная армия в 60 тысяч воинов участвовала в битве против джунгар при", options:["Буланты","Орбулаке","Аягузе","Аныракай"], correctIndex:0},
+      {id:"hkz_off_3", text:"В начале ХХ века построен (-а)", options:["Железная дорога Оренбург-Ташкент","Водный канал Иртыш-Караганда","Капчагайская электростанция","Шульбинская гидроэлектростанция"], correctIndex:0},
+      {id:"hkz_off_4", text:"В 1956 году осудил культ личности Сталина", options:["XIX партийная конференция","V пленум ЦК КПК","XXVII съезд КПСС","XX съезд КПСС"], correctIndex:3},
+      {id:"hkz_off_5", text:"Записал киргизский эпос «Манас»", options:["Абай Кунанбаев","Ыбрай Алтынсарин","Шокан Уалиханов","Алихан Букейханов"], correctIndex:2},
+      {id:"hkz_off_6", text:"Кочевники эпохи поздней бронзы в совершенстве владели", options:["секретами изготовления красок","приемами строительства дамб","искусством плавки металлов","приемами изготовления фарфора"], correctIndex:2},
+      {id:"hkz_off_7", text:"Столица Белой Орды", options:["Отрар","Узгенд","Сыгнак","Ташкент"], correctIndex:2},
+      {id:"hkz_off_8", text:"Автор реформы 1824 года в Младшем жузе", options:["О.Игельстром","П.Эссен","Н.Коншин","М.Сперанский"], correctIndex:1},
+      {id:"hkz_off_9", text:"В годы Великой Отечественной войны (1941-1945 гг.) в битве за Москву исключительную стойкость и героизм проявил Герой Советского Союза", options:["С.Нурмаганбетов","Н.Абдиров","Б.Момышулы","Ж.Елеусов"], correctIndex:2},
+      {id:"hkz_off_10", text:"Изучив контекст, определите событие произошедшее в истории Казахстана", options:["индустриализация","интервенция","размежевание","голод"], correctIndex:3},
+      {id:"hkz_off_11", text:"Используя контекст и исторические знания, определите хронологические рамки события, в результате которого население Казахстана сократилось в три раза", options:["1919-1920 гг.","1941-1942 гг.","1931-1933 гг.","1918-1920 гг."], correctIndex:2},
+      {id:"hkz_off_12", text:"Определите по контексту событие, вошедшее в историю как годы", options:["«великой смуты»","«великого джута»","«рисовых бунтов»","«красного террора»"], correctIndex:1}
+    ]},
+    "physics_official": {disciplineId:"physics", disciplineName:"Физика", level:"official", items:[
+      {id:"ph_off_1", text:"Поезд, двигаясь со скоростью 5 м/с, начал разгоняться с ускорением 0,5м/с2. Через 10 с его скорость будет равна", options:["9 м/с","8 м/с","11 м/с","10 м/с"], correctIndex:3},
+      {id:"ph_off_2", text:"При равновесии рычага на его меньшее плечо действует сила 300 Н, на большее плечо действует сила 20 Н. Если длина меньшего плеча равна 5 см, то длина большего плеча", options:["25 см","50 см","75 см","15 см"], correctIndex:2},
+      {id:"ph_off_3", text:"В газообразном состоянии", options:["не сохраняются форма и объем","сохраняются форма и объем","не сохраняется форма, но сохраняется объем","сохраняются форма и объем, так как расстояние между молекулами сравнимо с размерами самих молекул"], correctIndex:0},
+      {id:"ph_off_4", text:"Газу было передано 1 кДж количество тепла, при этом температура газа осталась неизменной. Работа газа", options:["0","3000 Дж","1000 Дж","2500 Дж"], correctIndex:2},
+      {id:"ph_off_5", text:"Электрическое поле точечного заряда 10 нКл на расстоянии 5 см от него имеет потенциал", options:["1450 В","1200 В","1800 В","1560 В"], correctIndex:2},
+      {id:"ph_off_6", text:"Фокусное расстояние объектива телескопа 14 м. Оптическая сила объектива равна", options:["0,07 дптр","1,4 дптр","0,14 дптр","0,7 дптр"], correctIndex:0},
+      {id:"ph_off_7", text:"Площадь меньшего поршня гидравлической машины 40 см2, площадь большего поршня 500 см2. Меньший поршень гидравлической машины движется со скоростью 0,2 см/с, скорость движения большого поршня", options:["0,16 см/с","0,016 см/с","2,5 см/с","0,2 см/с"], correctIndex:1},
+      {id:"ph_off_8", text:"Хорошая электропроводность металлов объясняется наличием в них большого числа", options:["свободных электронов","отрицательных ионов","положительных ионов","движущихся молекул"], correctIndex:0},
+      {id:"ph_off_9", text:"Луч света падает на поверхность стекла из воздуха под углом 49°. Угол преломления равен 30° (sin 30°=0,5, sin 49°=0,75, nвозд = 1). Показатель преломления стекла равен", options:["1,76","1,5","1,3","1,47"], correctIndex:1},
+      {id:"ph_off_10", text:"Величина в электромагнитных колебания, аналогичная массе в механических колебаниях", options:["q","U","C","L"], correctIndex:3},
+      {id:"ph_off_11", text:"Масса движущегося электрона вдвое больше его массы покоя при скорости (скорость света равна 3∙10⁸ м/с)", options:["2,6∙10⁸ м/с","2,3∙10⁸ м/с","2,9∙10⁸ м/с","1,9∙10⁸ м/с"], correctIndex:0},
+      {id:"ph_off_12", text:"Давление водяного пара содержащегося в воздухе 1220 Па, а при температуре 25°С, давление насыщенного водяного пара при этой же температуре равно 3170 Па, относительная влажность воздуха", options:["≈0,5","≈0,7","≈0,6","≈0,4"], correctIndex:3},
+      {id:"ph_off_13", text:"Удельная энергия связи ядра лития", options:["98,1 МэВ/нуклонов","9,81 МэВ/нуклонов","130,8 МэВ/нуклонов","5,6 МэВ/нуклонов"], correctIndex:3},
+      {id:"ph_off_14", text:"Лодка с человеком на борту покоится на расстоянии 10 м от берега. В лодке нет весел, есть только камень массой 0,5 кг. Если масса лодки вместе с человеком 100 кг, то время, за которое человек на лодке доплывет до берега, выбросив этот камень с борта перпендикулярно со скоростью 4 м/с, равно (силу сопротивления воды не учитывать)", options:["500 с","250 с","10 с","20 с"], correctIndex:0},
+      {id:"ph_off_15", text:"Если при изобарном процессе температуру газа увеличили на 60%, то его объем", options:["уменьшится на 40%","увеличится на 40%","уменьшится в 1,6 раза","увеличится в 1,6 раза"], correctIndex:3},
+      {id:"ph_off_16", text:"Сила Лоренца в магнитном поле не действует на", options:["протон, влетевший в магнитное поле, перпендикулярно силовым линиям","электрон, влетевший в магнитное поле, перпендикулярно силовым линиям","точечный заряд, покоящийся в магнитном поле","движущуюся, заряженную частицу в масс-спектрографе"], correctIndex:2},
+      {id:"ph_off_17", text:"Расположите в порядке возрастания длин волн электромагнитные излучения разной природы. 1) инфракрасное излучение Солнца 2) рентгеновские излучение 3) γ-излучение 4) ультрафиолетовое излучение", options:["3,2,1,4","3,2,4,1","2,1,4,3","1,2,3,4"], correctIndex:1},
+      {id:"ph_off_18", text:"Если расстояние между зарядами уменьшить в 2 раза, а диэлектрическую проницаемость увеличить в 2 раза, то сила взаимодействия зарядов", options:["уменьшится в 2 раза","увеличится в √2 раза","уменьшится в √2 раза","увеличится в 2 раза"], correctIndex:3},
+      {id:"ph_off_19", text:"В воду массой 1,5 кг положили лед, температура которого 0°C. Начальная температура воды 33°C. Если вся энергия, отданная водой, была затрачена только на плавление льда, то масса льда была равна (cвода=4,2·103 Дж/(кг·°С), λлед=3,3·105 Дж/кг)", options:["6,3 г","630 г","63 г","0,63 г"], correctIndex:1},
+      {id:"ph_off_20", text:"Электрическая цепь переменного тока с частотой 50 Гц и действующее напряжение 220 В состоит из катушки с индуктивным сопротивлением 150 Ом, конденсатора с емкостным сопротивлением 60 Ом и активным сопротивлением 63 Ом. Действующее значение сила тока в цепи равна", options:["≈4,4 А","≈3 А","≈2 А","≈12 А"], correctIndex:2},
+      {id:"ph_off_21", text:"Количество теплоты выделившееся в результате абсолютно неупругого центрального соударения двух шаров массами 1 кг и 2 кг, и скоростями 2 м/с и 1 м/с соответственно. Движение тел направлено друг к другу", options:["3 Дж","1 Дж","2,67 Дж","2 Дж"], correctIndex:0},
+      {id:"ph_off_22", text:"Теннисный мяч представляет собой полый резиновый шар массой 57 г и диаметром 6,5 см. Максимальная скорость подачи достигает 180 км/ч, максимальная высота подачи около 3 м. Сила тяжести, действующая на мяч (g=10 м/с2)", options:["57,0 мН","28,0 мН","0,28 Н","0,57 Н"], correctIndex:3},
+      {id:"ph_off_23", text:"Теннисный мяч массой 57 г; максимальная скорость подачи 180 км/ч. Импульс мяча после подачи равен", options:["≈2,85 кг·м/с","≈6,80 кг·м/с","≈0,16 кг·м/с","≈0,32 кг·м/с"], correctIndex:0},
+      {id:"ph_off_24", text:"Теннисный мяч массой 57 г; максимальная скорость подачи 180 км/ч. Если до удара скорость мяча была равна 30 м/с, то изменение импульса мяча после удара равно", options:["1,5 кг·м/с","4,56 кг·м/с","2,41 кг·м/с","3,2 кг·м/с"], correctIndex:1},
+      {id:"ph_off_25", text:"Теннисный мяч массой 57 г; максимальная скорость подачи 180 км/ч; максимальная высота подачи около 3 м. Если мяч подается с максимальной скоростью и на максимальной высоте, то его полная механическая энергия сразу после подачи равна (g=10 м/с2)", options:["≈72,96 Дж","≈17,1 Дж","≈34,2 Дж","≈51,31 Дж"], correctIndex:0}
+    ]},
+    "chemistry_official": {disciplineId:"chemistry", disciplineName:"Химия", level:"official", items:[
+      {id:"chem_off_1", text:"Номер группы (для главных подгрупп) показывает", options:["число нейтронов","число валентных электронов","число протонов","общее число электронов"], correctIndex:1},
+      {id:"chem_off_2", text:"Верное суждение", options:["в периоде слева направо металлические свойства ослабевают, а неметаллические – усиливаются","в группе сверху вниз металлические свойства ослабевают, а неметаллические – усиливаются","в периоде слева направо металлические свойства усиливаются, а неметаллические – ослабевают","в группе сверху вниз металлические свойства усиливаются, а неметаллические – не изменяются"], correctIndex:0},
+      {id:"chem_off_3", text:"При электролизе расплава 29,8 г хлорида калия выделился хлор объёмом (л, н.у.)", options:["3,36","2,24","4,48","1,12"], correctIndex:2},
+      {id:"chem_off_4", text:"Для увеличения выхода продукта реакции в процессе Габера необходимо", options:["уменьшить концентрацию водорода","увеличить концентрацию аммиака","увеличить концентрацию азота","уменьшить концентрацию азота"], correctIndex:2},
+      {id:"chem_off_5", text:"В растворе нитрата цинка лакмус", options:["синий","красный","фиолетовый","бесцветный"], correctIndex:1},
+      {id:"chem_off_6", text:"Элемент I группы, А подгруппы, 4 периода", options:["германий","литий","углерод","калий"], correctIndex:3},
+      {id:"chem_off_7", text:"Формула кремнезема", options:["CaCO3","Al2O3","SiO2","COCl2"], correctIndex:2},
+      {id:"chem_off_8", text:"К азотным удобрениям относится", options:["мочевина","фосфоритная мука","двойной суперфосфат","поташ"], correctIndex:0},
+      {id:"chem_off_9", text:"Степени окисления серы", options:["-2, 0, +4, +6","-2, 0, +3, +4","+2, 0, +4, +6","-2, 0, +3, +6"], correctIndex:0},
+      {id:"chem_off_10", text:"Внешнему электронному слою атома хлора соответствует электронная конфигурация", options:["3s²3p⁵","3s²3p⁶","2s²2p⁶","3s¹3p⁵"], correctIndex:0},
+      {id:"chem_off_11", text:"Наибольшей электрической проводимостью обладает", options:["Fe","Pb","Hg","Cu"], correctIndex:3},
+      {id:"chem_off_12", text:"При дегидрировании н-бутана в присутствии катализатора образовалось 450 г дивинила. Масса н-бутана", options:["546,3 г","483,3 г","478,2 г","463,2 г"], correctIndex:1},
+      {id:"chem_off_13", text:"Реагент, доказывающий кислотные свойства фенола", options:["HNO₃","Br₂","O₂","NaOH"], correctIndex:3},
+      {id:"chem_off_14", text:"Соединение, способное вступать в реакцию поликонденсации", options:["аланин","метилэтиламин","анилин","метиламин"], correctIndex:0},
+      {id:"chem_off_15", text:"Молекулярная масса изопренового каучука 680000. Степень полимеризации", options:["10000","3500","1000","2500"], correctIndex:0},
+      {id:"chem_off_16", text:"При уменьшении концентрации сернистого газа в 3 раза скорость реакции", options:["уменьшается в 9 раз","увеличивается в 27 раз","уменьшается в 27 раз","увеличивается в 9 раз"], correctIndex:0},
+      {id:"chem_off_17", text:"Масса оксида натрия (г), полученная сплавлением 19,5 г пероксида натрия с металлическим натрием при 70%-ной степени превращения пероксида", options:["15,5","31,0","11,5","21,7"], correctIndex:3},
+      {id:"chem_off_18", text:"При нагревании 336 кг карбоната магния образовалось 122,4 кг оксида магния. Выход оксида магния по сравнению с теоретически возможным", options:["76,5%","34,8%","47,6%","23,7%"], correctIndex:0},
+      {id:"chem_off_19", text:"В замкнутый контейнер поместили 2 моль водорода, 56 г азота, 160 г кислорода и 16 г оксида магния. Объём (л, при н.у.), занимаемый смесью газов равен", options:["112,0","44,8","201,6","56,0"], correctIndex:2},
+      {id:"chem_off_20", text:"На смесь фенола и этанола подействовали 40 г 10% раствора гидроксида натрия. Масса фенола в смеси (г)", options:["11,0","9,4","6,6","4,0"], correctIndex:1},
+      {id:"chem_off_21", text:"При действии избытка соляной кислоты на сплав железа и меди выделяется 448 мл (н.у) водорода. Масса (г) исходного сплава, если массовая доля железа составляет в нем 20%", options:["4,2","5,6","2,8","1,4"], correctIndex:1},
+      {id:"chem_off_22", text:"К 70 %-ному раствору серной кислоты массой 280 г добавили оксид серы (VI) массой 400 г. Массовая доля в (%) оксида серы (VI) в образовавшемся олеуме", options:["11,6","3,65","5,8","3,93"], correctIndex:3},
+      {id:"chem_off_23", text:"Оксид углерода (IV), полученный при полном сжигании 0,6 г углерода, пропустили через раствор гидроксида кальция массой 250 г с массовой долей, равной 3,5%. Масса (г) полученного осадка", options:["2,5","3,5","5,0","7,5"], correctIndex:2}
+    ]},
+    "biology_official": {disciplineId:"biology", disciplineName:"Биология", level:"official", items:[
+      {id:"bio_off_1", text:"Сосудисто-волокнистые пучки листа", options:["волоски","жилки","устьица","междоузлия"], correctIndex:1},
+      {id:"bio_off_2", text:"Способен синтезироваться клетками кожи под воздействием ультрафиолета витамин", options:["D","А","C","E"], correctIndex:0},
+      {id:"bio_off_3", text:"Зона корня, где происходит удлинение клеток", options:["проведения","всасывания","дыхание","роста"], correctIndex:3},
+      {id:"bio_off_4", text:"Влияет на степень ионизации субстрата, фермент-субстратного комплекса и продуктов реакции", options:["гормон","витамин","pH среда","ингибитор"], correctIndex:2},
+      {id:"bio_off_5", text:"При анаэробном распаде 1 молекулы глюкозы, освобождается 2 молекулы АТФ (1 молекула АТФ при гидролизе освобождает 30,6 кДж/моль энергии). Количество энергии при распаде 3 молекул глюкозы составит", options:["30,6 кДж/моль","122,4 кДж/моль","183,6 кДж/моль","61,2 кДж/моль"], correctIndex:2},
+      {id:"bio_off_6", text:"Завершите уравнение химической реакции аэробного дыхания С6Н12О6+6О2→6СО2+....+....", options:["О2+2АТФ","6Н2О+36АТФ","2С3Н6О3+36АДФ","2С3Н6О3+2АТФ"], correctIndex:1},
+      {id:"bio_off_7", text:"Очистка коллоидных растворов и субстанций высокомолекулярных веществ от низкомолекулярных соединений при помощи полупроницаемой мембраны в почках", options:["диализ","диализатор","диализат","диффузия"], correctIndex:0},
+      {id:"bio_off_8", text:"K быстро адаптирующимся механорецепторам относят", options:["диски Меркеля","тельца Руффини","тельца Мейснера","клетки Шванна"], correctIndex:2},
+      {id:"bio_off_9", text:"Тип размножения без участия гамет", options:["половое","онтогенез","бесполое","эмбриогенез"], correctIndex:2},
+      {id:"bio_off_10", text:"Встречается ДНК и РНК в", options:["вакуолях, ядре","митохондриях, вакуолях","ядре, пластидах","оболочках, пластидах"], correctIndex:2},
+      {id:"bio_off_11", text:"Вид ненаследственной изменчивости", options:["модификационная","комбинативная","мутационная","цитоплазматическая"], correctIndex:0},
+      {id:"bio_off_12", text:"Дерево, отражающее эволюционные отношения между несколькими видами", options:["филогенетическое","онтогенетическое","эмбриологическое","бронхиальное"], correctIndex:0},
+      {id:"bio_off_13", text:"Длинные цепи молекул, состоящие из мономеров", options:["аденин","полимеры","глюкоза","мономеры"], correctIndex:1},
+      {id:"bio_off_14", text:"Возбуждение дыхательного центра и учащение дыхания вызывается повышением концентрации в крови", options:["N","СО2","О2","Mg"], correctIndex:1},
+      {id:"bio_off_15", text:"Использование биологических процессов и живых организмов в промышленном производстве", options:["цитология","мутагенез","преципитация","биотехнология"], correctIndex:3},
+      {id:"bio_off_16", text:"Захват мембраной крупных частиц с помощью ложноножек", options:["пиноцитоз","катализ","фагоцитоз","диффузия"], correctIndex:2},
+      {id:"bio_off_17", text:"Сенсорная зона, расположенная в затылочной доле", options:["слуховая","обонятельная","вкусовая","зрительная"], correctIndex:3},
+      {id:"bio_off_18", text:"Заряд мембраны – мембранный потенциал, изменится, если воздействию подвергнутся клетки", options:["нервной и мышечной ткани","костной ткани и кожи","хрящей и сухожилий","эпителия и хрящей"], correctIndex:0},
+      {id:"bio_off_19", text:"В результате дробления зиготы образуется", options:["нейрула","бластула","орган","гаструла"], correctIndex:1},
+      {id:"bio_off_20", text:"Белок, который переносит электроны в ряде метаболических реакций в процессе фотосинтеза", options:["ферредоксин","актин","меланин","миозин"], correctIndex:0},
+      {id:"bio_off_21", text:"Бактерии, обитающие в земле и в воде, получают свою энергию за счет аммиака и азотистой кислоты", options:["тиобактерии","нитрифицирующие","железобактерии","серобактерии"], correctIndex:1},
+      {id:"bio_off_22", text:"K микроорганизмам относятся", options:["кишечнополостные","вирусы, бактерии","гидры, бактерии","планарии, грибы"], correctIndex:1},
+      {id:"bio_off_23", text:"Aнтитела, вызывающие растворение антигена", options:["иммунологические","нейтрализующие","связывающие","лизирующие"], correctIndex:3},
+      {id:"bio_off_24", text:"Женщина с первой группой крови вышла замуж за мужчину с четвертой группой крови. Возможные генотипы детей", options:["АА, ВВ","АО, ВО","ОО, АВ","АВ, ВО"], correctIndex:1},
+      {id:"bio_off_25", text:"Деление ядра", options:["пиноцитоз","кариокинез","интерфаза","фагацитоз"], correctIndex:1},
+      {id:"bio_off_26", text:"Период роста и подготовки клетки к следующему делению", options:["интерфаза","анафаза","метафаза","телофаза"], correctIndex:0},
+      {id:"bio_off_27", text:"При гаметогенезе конъюгация и кроссинговер происходят в", options:["метафазе I","профазе І","анафазе І","интерфазе"], correctIndex:1},
+      {id:"bio_off_28", text:"Хромосомы выстраиваются в экваториальной плоскости", options:["профаза","анафаза","метафаза","телофаза"], correctIndex:2},
+      {id:"bio_off_29", text:"Признак митотического деления", options:["конъюгация и кроссинговер","образование гаплоидных клеток","образование гамет","деление соматических клеток"], correctIndex:3}
+    ]},
+    "world_hist_official": {disciplineId:"world_hist", disciplineName:"Всемирная история", level:"official", items:[
+      {id:"wh_off_1", text:"Военный поход Дария I в 518 году до н. э. был против", options:["саков","вавилонян","ассирийцев","египтян"], correctIndex:0},
+      {id:"wh_off_2", text:"В 509 году до н.э. в Риме установлен(-а)", options:["республика","диктатура","империя","монархия"], correctIndex:0},
+      {id:"wh_off_3", text:"В 750 г. на смену Омеядам в Арабском халифате пришла династия", options:["Аршакидов","Саманидов","Аббасидов","Аххеминидов"], correctIndex:2},
+      {id:"wh_off_4", text:"Территория, которую США приобрели у России", options:["Техас","Флорида","Аляска","Орегон"], correctIndex:2},
+      {id:"wh_off_5", text:"Успеху промышленной революции в Англии конца XVIII в. способствовало изобретение Дж. Уатта", options:["телеграфной станции","морского парохода","воздушного дирижабля","парового двигателя"], correctIndex:3},
+      {id:"wh_off_6", text:"Правитель Австрийской империи, проводивший политику просвещенного абсолютизма", options:["Карл VI","Франц II","Леопольд II","Мария Терезия"], correctIndex:3},
+      {id:"wh_off_7", text:"Главный структурный фактор развития экономики Японии", options:["наука и образование","религия и традиции","рыболовство и мореходство","земледелие и скотоводство"], correctIndex:0},
+      {id:"wh_off_8", text:"Основной признак президентской республики", options:["президент обладает правом отлагательного вето","президент осуществляет представительские функции","нормативные акты утверждает парламент","президент избирается парламентом"], correctIndex:0},
+      {id:"wh_off_9", text:"Глава правительства Японии с 1937 года, при котором были запрещены политические партии", options:["Хирота","Кимура","Коноэ","Танака"], correctIndex:2},
+      {id:"wh_off_10", text:"В основе «Доктрины Монро», лежит принцип «Америка для американцев», который подразумевает", options:["господство США над всей Америкой","привлечение иностранного капитала в США","консолидацию внутренних сил США","защиту интересов всех колоний Испании"], correctIndex:0},
+      {id:"wh_off_11", text:"Особенность НЭПа в СССР", options:["внедрение пятилетних планов развития экономики","отсутствие элементов рыночной экономики","сочетание капиталистических отношений и командного управления","использование экономических рычагов принуждения"], correctIndex:2},
+      {id:"wh_off_12", text:"Цель международной организации Лиги Наций, созданной в 1919 году", options:["развитие сотрудничества и гарантия безопасности послевоенного мира","разрешение территориальных притязаний Германии","урегулирование ближневосточного конфликта","оказание помощи колониальным странам"], correctIndex:0},
+      {id:"wh_off_13", text:"Документ, принятый в 1941 году, характеризующий стратегические цели США во Второй мировой войне", options:["Атлантическая хартия","«14 пунктов»","План Дауэса","План Маршалла"], correctIndex:0},
+      {id:"wh_off_14", text:"В годы Второй мировой войны в 1938 году в марте Германия захватила", options:["СССР","Японию","Англию","Австрию"], correctIndex:3},
+      {id:"wh_off_15", text:"Началом «холодной войны» стала фундаментальная речь в 1946 году", options:["Дж. Кеннеди","У. Черчилля","Н. Хрущева","Дж. Маршалла"], correctIndex:1},
+      {id:"wh_off_16", text:"Конвенция Международной организации труда (МОТ) в целях борьбы с бедностью", options:["«Программа ассоциации труда и капитала»","«Смягчение падения доходов населения»","«О государственной адресной помощи»","«Охрана заработной платы»"], correctIndex:3},
+      {id:"wh_off_17", text:"Президент США, при котором была развернута программа «Звездные войны»", options:["Дж. Кеннеди","Л. Джонсон","Р. Рейган","Г. Трумэн"], correctIndex:2},
+      {id:"wh_off_18", text:"20 февраля 1962 года был совершен первый орбитальный полет вокруг Земли на корабле", options:["«Восход-2»","«Восток-1»","«Аполлон-11»","«Меркурий-6»"], correctIndex:3},
+      {id:"wh_off_19", text:"Одна из лучших картин голландского великого мастера живописи и графики Рембрандта Харменс Ван Рейна", options:["«Мона Лиза»","«Возвращение блудного сына»","«Инфанта Маргарита»","«Скованный раб»"], correctIndex:1},
+      {id:"wh_off_20", text:"Революционная песня «Марсельеза», сочиненная в 1792 г. Руже де Лилем в качестве гимна Французской республики, принял(-о)", options:["Император","Кортес","Конвент","Конгресс"], correctIndex:2},
+      {id:"wh_off_21", text:"Президент Ирана М. Хатами выдвинул формулу о необходимости", options:["«диалога внутри общества»","«импорта западных ценностей»","«экспорта исламской революции»","«диалога цивилизаций»"], correctIndex:3},
+      {id:"wh_off_22", text:"Инициатор перехода реформирования экономики Китая с использованием рыночных механизмов", options:["Дэн Сяопин","Сунь Ятсен","Чан Кайши","Мао Цзэдун"], correctIndex:0},
+      {id:"wh_off_23", text:"Орган власти в России, пришедший на смену Боярской Думе указом Петра I", options:["Сенат","Священный синод","Парламент","Земский собор"], correctIndex:0},
+      {id:"wh_off_24", text:"Значительное влияние на развитие общественной мысли оказали", options:["идеи Футуризма","идеи Пацифизма","идеи Авангардизма","идеи Просвещения"], correctIndex:3},
+      {id:"wh_off_25", text:"Определите верные утверждения: I. Ф. Вольтер был одним из выдающихся деятелей эпохи просвещения. II. Ф. Вольтер был политическим деятелем Англии. III. Ф. Вольтер подвергал критике католических священнослужителей. IV. Ф. Вольтер самый известный французский просветитель XIX века.", options:["I, IV","II, IV","II, III","I, III"], correctIndex:3}
+    ]},
+    "english_official": {disciplineId:"english", disciplineName:"Английский язык", level:"official", items:[
+      {id:"en_off_1", text:"Choose the word with a similar meaning to \"lively\".", options:["shy","lazy","active","silent"], correctIndex:2},
+      {id:"en_off_2", text:"Choose the synonym of \"gentle\".", options:["kind","shy","silent","lazy"], correctIndex:0},
+      {id:"en_off_3", text:"Choose the antonym of \"hardworking\".", options:["noisy","polite","shy","lazy"], correctIndex:3},
+      {id:"en_off_4", text:"They made ______ his face to look like a clown.", options:["into","up","for","off"], correctIndex:1},
+      {id:"en_off_5", text:"It is our station. Please, get _____ the bus.", options:["of","off","out","down"], correctIndex:1},
+      {id:"en_off_6", text:"… book in this section is about the history of sports.", options:["others","other","another","every"], correctIndex:3},
+      {id:"en_off_7", text:"Everybody ___ happy when the rain stopped.", options:["was","are","will","is"], correctIndex:0},
+      {id:"en_off_8", text:"I didn't have … so I didn't complete the test yesterday.", options:["too enough time","enough time","time enough","too many time"], correctIndex:1},
+      {id:"en_off_9", text:"We wanted to visit the theatre, but the tickets were too ____.", options:["horrible","expensive","boring","delicious"], correctIndex:1},
+      {id:"en_off_10", text:"Which of the following is a countable noun?", options:["creature","electricity","juice","friendship"], correctIndex:0},
+      {id:"en_off_11", text:"All I wanted was ___ glass of water.", options:["an","a","-","any"], correctIndex:1},
+      {id:"en_off_12", text:"Timur wished he ______ to the weather forecast. He was wet to the bones!", options:["would listened","was listening","listening","had listened"], correctIndex:3},
+      {id:"en_off_13", text:"We ___ to the cinema at weekends.", options:["do use to go","did use to go","use to go","used to go"], correctIndex:3},
+      {id:"en_off_14", text:"You haven't got a pen, …?", options:["are you","haven't you","have you","aren't you"], correctIndex:2},
+      {id:"en_off_15", text:"That's a city in which I _____ for eight years.", options:["lived","has lived","will living","would lived"], correctIndex:0},
+      {id:"en_off_16", text:"What games … you … when you were a child?", options:["do, use to play","did, use to play","are, used to play","did, used to play"], correctIndex:1},
+      {id:"en_off_17", text:"Because of incorrect timing, I am falling ____ my project.", options:["before","behind","aside","about"], correctIndex:1},
+      {id:"en_off_18", text:"We hear people laughing. They ____ be watching a comedy.", options:["must","shall","can't","couldn't"], correctIndex:0},
+      {id:"en_off_19", text:"Daniel Defoe was … important English writer born in … London, England.", options:["an, -","the, -","an, the","the, an"], correctIndex:0},
+      {id:"en_off_20", text:"There was so … noise that I couldn't sleep.", options:["much","little","many","few"], correctIndex:0},
+      {id:"en_off_21", text:"Choose the correct sentence in Reported Speech.", options:["Anar has just saying she is going to visit Pavlodar again.","Anar said she was going to visit Pavlodar again.","Anar has just said: \"I am going to visit Pavlodar again\".","Anar is just say she is going to visit Pavlodar again."], correctIndex:1},
+      {id:"en_off_22", text:"Liz doesn't travel much now. She … a lot, but she prefers to stay at home these days.", options:["doesn't used to travel","is used to travel","used to travel","get used to travelling"], correctIndex:2},
+      {id:"en_off_23", text:"\"I read the article about the nanobots yesterday\" she told me. Choose the correct sentence in Reported Speech.", options:["She told me that she had read the article about the nanobots the day before.","She told me that she read the article about the nanobots yesterday.","She told me that she read the article about the nanobots the day before.","She told me that she had read the article about the nanobots yesterday."], correctIndex:0},
+      {id:"en_off_24", text:"It is so exciting, I wish you … .", options:["was with us","were here with us","would be rich","had earned much money"], correctIndex:1},
+      {id:"en_off_25", text:"Choose the adverb of frequency.", options:["never","soon","lonely","sadly"], correctIndex:0},
+      {id:"en_off_26", text:"Which suffix is used to form adverbs?", options:["-er","-ish","-ly","-ed"], correctIndex:2},
+      {id:"en_off_27", text:"The word \"lonely\" is …", options:["verb","adjective","adverb","noun"], correctIndex:1},
+      {id:"en_off_28", text:"Choose the synonym of \"deserted\".", options:["alone","built","lost","abandoned"], correctIndex:3}
+    ]},
   };
 
   /* ---------------- helpers ---------------- */
@@ -638,7 +967,7 @@
   var S = {
     screen:"splash",
     authMode:"register",        // register | login
-    contactType:"email",        // email | phone
+    contactType:"telegram",
     pendingReg:null,             // staged registration data awaiting OTP
     pendingLoginContact:null,
     user:null,
@@ -730,7 +1059,7 @@
       '</div>'+
       '<div style="position:absolute; left:20px; right:20px; bottom:28px;" class="gap-12">'+
         '<button class="btn btn-primary" data-action="goto" data-arg="authChoice">Начать</button>'+
-        '<p class="hint" style="text-align:center;">Демо-режим: подтверждение по коду без реальной отправки SMS/почты</p>'+
+        '<p class="hint" style="text-align:center;">Демо-режим: вход через Telegram, подтверждение кодом без реального бота</p>'+
         (Store.usingLocalFallback ? '<p class="hint" style="text-align:center;">Данные сохраняются только в этом браузере, на этом устройстве</p>' : '')+
       '</div>';
   }
@@ -752,7 +1081,6 @@
 
   function screenRegister(){
     var r = S.pendingReg || {fio:"",city:CITIES[0],goal:GOALS[0],goalOther:"",contact:""};
-    var ct = S.contactType;
     return '' +
       '<form id="registerForm" class="gap-8" style="margin-top:6px;">'+
         '<div class="field">'+
@@ -770,34 +1098,21 @@
           (r.goal==="Другое" ? '<input type="text" id="f_goal_other" placeholder="Уточните цель" value="'+esc(r.goalOther)+'" style="margin-top:8px;">' : '')+
         '</div>'+
         '<div class="field">'+
-          '<label class="field-label">Способ связи для входа и результатов</label>'+
-          '<div class="seg" style="margin-bottom:10px;">'+
-            '<button type="button" data-action="setContactType" data-arg="email" class="'+(ct==="email"?"active":"")+'">Почта</button>'+
-            '<button type="button" data-action="setContactType" data-arg="phone" class="'+(ct==="phone"?"active":"")+'">Телефон</button>'+
-          '</div>'+
-          (ct==="email" ?
-            '<input type="email" id="f_contact" placeholder="you@example.com" value="'+esc(r.contact)+'" autocomplete="email">' :
-            '<input type="tel" id="f_contact" placeholder="+7 7XX XXX XX XX" value="'+esc(r.contact)+'" autocomplete="tel">')+
+          '<label class="field-label">Telegram-аккаунт для входа и результатов</label>'+
+          telegramInputHtml("f_contact", r.contact)+
           fieldErr("contact")+
         '</div>'+
-        '<button type="submit" class="btn btn-primary" style="margin-top:6px;">Получить код подтверждения</button>'+
+        '<button type="submit" class="btn btn-primary" style="margin-top:6px;">Получить код в Telegram</button>'+
         '<p class="hint" style="text-align:center;">Нажимая «Получить код», вы соглашаетесь на обработку данных для подготовки к ЕНТ</p>'+
       '</form>';
   }
 
   function screenLogin(){
-    var ct = S.contactType;
     return '' +
       '<form id="loginForm" class="gap-8" style="margin-top:6px;">'+
         '<div class="field">'+
-          '<label class="field-label">Способ входа</label>'+
-          '<div class="seg" style="margin-bottom:10px;">'+
-            '<button type="button" data-action="setContactType" data-arg="email" class="'+(ct==="email"?"active":"")+'">Почта</button>'+
-            '<button type="button" data-action="setContactType" data-arg="phone" class="'+(ct==="phone"?"active":"")+'">Телефон</button>'+
-          '</div>'+
-          (ct==="email" ?
-            '<input type="email" id="f_login_contact" placeholder="you@example.com" autocomplete="email">' :
-            '<input type="tel" id="f_login_contact" placeholder="+7 7XX XXX XX XX" autocomplete="tel">')+
+          '<label class="field-label">Telegram-аккаунт</label>'+
+          telegramInputHtml("f_login_contact", "")+
           fieldErr("contact")+
         '</div>'+
         '<button type="submit" class="btn btn-primary">Получить код входа</button>'+
@@ -805,13 +1120,28 @@
       '</form>';
   }
 
+  function telegramIcon(){
+    return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21.5 4.2 2.9 11.5c-1.2.5-1.2 1.2-.2 1.5l4.8 1.5 1.8 5.6c.2.6.4.8.9.8.5 0 .7-.2 1-.5l2.4-2.3 4.9 3.6c.9.5 1.5.2 1.8-.8l3.2-15c.4-1.3-.4-1.8-1-1.7Z" fill="currentColor"/></svg>';
+  }
+
+  function telegramInputHtml(id, value){
+    return '' +
+      '<div style="position:relative;">'+
+        '<span style="position:absolute; left:13px; top:50%; transform:translateY(-50%); color:var(--azure-600); display:flex;">'+telegramIcon()+'</span>'+
+        '<input type="text" id="'+id+'" placeholder="@username" value="'+esc(value)+'" autocomplete="off" autocapitalize="none" style="padding-left:38px;">'+
+      '</div>';
+  }
+
   function screenOtp(mode){
     var contact = mode==="register" ? (S.pendingReg && S.pendingReg.contact) : S.pendingLoginContact;
     return '' +
       '<div style="margin-top:10px;" class="gap-12">'+
-        '<p class="muted">Мы отправили код подтверждения на <b style="color:var(--ink);">'+esc(contact||"")+'</b></p>'+
+        '<div class="center-col" style="margin-bottom:2px;">'+
+          '<div class="brandmark" style="width:46px;height:46px;background:linear-gradient(155deg,#3AB0E8,#1E8ECF);">'+telegramIcon()+'</div>'+
+        '</div>'+
+        '<p class="muted" style="text-align:center;">Откройте Telegram, найдите бота <b style="color:var(--ink);">@ent_dayyn_bot</b> и нажмите Start — он пришлёт код для <b style="color:var(--ink);">'+esc(contact||"")+'</b></p>'+
         '<div class="card" style="background:var(--gold-100); border-color:transparent;">'+
-          '<p style="font-size:12.5px; font-weight:600;">Демо-режим: реальная отправка SMS/почты не подключена. Используйте код <span class="num" style="font-weight:700;">123456</span></p>'+
+          '<p style="font-size:12.5px; font-weight:600;">Демо-режим: реальный Telegram-бот ещё не подключён. Используйте код <span class="num" style="font-weight:700;">123456</span></p>'+
         '</div>'+
         '<input type="text" id="f_otp" class="otp-input" maxlength="6" placeholder="••••••" inputmode="numeric">'+
         fieldErr("otp")+
@@ -947,7 +1277,7 @@
         '</div>'+
         '<p class="muted" style="text-align:center; font-size:12.5px;">Пройдено '+fmtDate(res.finishedAt)+'</p>'+
         (isDetail ? '' :
-          '<button class="btn btn-outline" data-action="openEmailPreview">Показать письмо с результатом (демо)</button>'
+          '<button class="btn btn-outline" data-action="openEmailPreview">Показать сообщение в Telegram (демо)</button>'
         )+
         '<div class="divider"></div>'+
         '<h3 style="font-size:15px; margin-bottom:4px;">Разбор ответов</h3>'+
@@ -1016,36 +1346,43 @@
       '<div class="center-col" style="margin-bottom:18px;">'+
         '<div class="brandmark" style="font-size:18px;">'+(u.fio?u.fio.trim().charAt(0).toUpperCase():"?")+'</div>'+
         '<h2 style="font-size:19px; margin-top:12px;">'+esc(u.fio||"")+'</h2>'+
-        '<p class="muted" style="margin-top:2px; font-size:13px;">'+esc(u.contact||"")+'</p>'+
+        '<p class="muted" style="margin-top:2px; font-size:13px; display:flex; align-items:center; gap:5px; color:var(--azure-600);">'+telegramIcon()+' '+esc(u.contact||"")+'</p>'+
       '</div>'+
       '<div class="card-lg gap-8">'+
+        '<div class="row"><span class="muted" style="font-size:13px;">Telegram</span><span style="font-weight:700; font-size:13.5px;">'+esc(u.contact||"—")+'</span></div>'+
         '<div class="row"><span class="muted" style="font-size:13px;">Город</span><span style="font-weight:700; font-size:13.5px;">'+esc(u.city||"—")+'</span></div>'+
         '<div class="row"><span class="muted" style="font-size:13px;">Цель подготовки</span><span style="font-weight:700; font-size:13.5px; text-align:right; max-width:60%;">'+esc(u.goal||"—")+'</span></div>'+
         '<div class="row"><span class="muted" style="font-size:13px;">Пройдено тестов</span><span class="num" style="font-weight:700; font-size:13.5px;">'+a.length+'</span></div>'+
         '<div class="row"><span class="muted" style="font-size:13px;">Средний балл</span><span class="num" style="font-weight:700; font-size:13.5px;">'+avg+'%</span></div>'+
       '</div>'+
       '<button class="btn btn-outline" style="margin-top:14px;" data-action="editProfile">Редактировать профиль</button>'+
-      '<div class="kaspi-teaser">'+
+      '<div class="kaspi-teaser" data-action="showKaspiIdea" style="cursor:pointer;">'+
         '<div class="kl">KZ</div>'+
         '<div><div class="kt">Подписка Kaspi Pay</div><div class="kd">Полный банк заданий и разбор ошибок по подписке</div></div>'+
-        '<div class="soon-badge">Скоро</div>'+
+        '<div class="soon-badge">Идея</div>'+
       '</div>'+
       '<button class="btn btn-danger-ghost" style="margin-top:18px;" data-action="logout">Выйти из аккаунта</button>';
   }
 
-  /* ---------------- modal / email preview ---------------- */
+  /* ---------------- modal / Telegram message preview ---------------- */
 
-  function emailBody(res, user){
+  function telegramMessageBody(res, user){
     var p = pct(res.correctCount, res.totalQuestions);
-    return "Кому: " + (user.contact||"") + "\n" +
-      "Тема: Результаты пробного теста ЕНТ — " + res.disciplineName + "\n\n" +
+    return "🎓 Результаты пробного теста ЕНТ\n\n" +
       "Здравствуйте, " + (user.fio||"") + "!\n\n" +
-      "Вы завершили пробное тестирование:\n" +
       "Дисциплина: " + res.disciplineName + "\n" +
       "Уровень: " + levelName(res.level) + "\n" +
       "Правильных ответов: " + res.correctCount + " из " + res.totalQuestions + " (" + p + "%)\n" +
       "Неправильных ответов: " + res.wrongCount + "\n\n" +
-      "Желаем успехов в подготовке к ЕНТ!\n— команда ЕНТ Дайын";
+      "Желаем успехов в подготовке к ЕНТ!\n— бот @ent_dayyn_bot";
+  }
+
+  function kaspiStepHtml(num, title, desc){
+    return '' +
+      '<div style="display:flex; gap:12px; align-items:flex-start;">'+
+        '<div style="flex:none; width:26px;height:26px;border-radius:50%; background:var(--gold-100); color:var(--gold-600); display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-weight:700; font-size:12px;">'+num+'</div>'+
+        '<div><div style="font-weight:700; font-size:13.5px; margin-bottom:2px;">'+esc(title)+'</div><div class="muted" style="font-size:12.5px; line-height:1.5;">'+esc(desc)+'</div></div>'+
+      '</div>';
   }
 
   function openModal(html){
@@ -1067,7 +1404,7 @@
 
     setContactType: function(arg){ S.contactType=arg; render(); },
 
-    async resendOtp(){ toast("Демо-код отправлен повторно: 123456"); },
+    async resendOtp(){ toast("Демо-код отправлен в Telegram повторно: 123456"); },
 
     async verifyOtp(mode){
       var code = (document.getElementById("f_otp")||{}).value || "";
@@ -1163,11 +1500,11 @@
     },
 
     openEmailPreview: function(){
-      var body = emailBody(S.lastResult, S.user);
+      var body = telegramMessageBody(S.lastResult, S.user);
       openModal(
-        '<h3>Предпросмотр письма (демо)</h3>'+
+        '<h3>Сообщение в Telegram (демо)</h3>'+
         '<div class="email-preview">'+esc(body)+'</div>'+
-        '<p class="hint" style="margin-bottom:14px;">Это демонстрация содержимого письма. Реальная отправка на почту появится после подключения почтового сервиса.</p>'+
+        '<p class="hint" style="margin-bottom:14px;">Это демонстрация сообщения от бота. Реальная отправка появится после подключения Telegram-бота.</p>'+
         '<button class="btn btn-primary" data-action="closeModal">Понятно</button>'
       );
     },
@@ -1186,6 +1523,21 @@
       goto("attemptDetail");
     },
 
+    showKaspiIdea: function(){
+      openModal(
+        '<h3>Как заработает платный доступ</h3>'+
+        '<div class="gap-12" style="margin-bottom:16px;">'+
+          '<p style="font-size:13.5px; line-height:1.6;">Это описание будущей механики — оплата пока нигде не подключена и денег с вас/учеников это приложение не берёт.</p>'+
+          kaspiStepHtml("1","Счёт на оплату","Приложение обращается к серверу и создаёт заказ на подписку — сервер запрашивает у Kaspi Pay for Business QR-код или платёжную ссылку на нужную сумму.")+
+          kaspiStepHtml("2","Оплата в приложении Kaspi.kz","Ученик сканирует QR камерой телефона или переходит по ссылке и подтверждает перевод в своём приложении Kaspi — вводить данные карты внутри ЕНТ Дайын не нужно.")+
+          kaspiStepHtml("3","Подтверждение от Kaspi","Kaspi сообщает серверу об оплате через вебхук (автоматически) — либо, пока нет доступа к API для бизнеса, ученик присылает боту скрин чека с уникальным номером заказа для ручной сверки.")+
+          kaspiStepHtml("4","Доступ открывается","Сервер помечает аккаунт ученика как «оплачен» до определённой даты — приложение сразу открывает полный банк вопросов и подробную аналитику ошибок.")+
+          '<p class="hint">Для автоматического варианта (шаг 3) нужен свой backend-сервер — статическая страница принять платёж и вебхук Kaspi самостоятельно не может.</p>'+
+        '</div>'+
+        '<button class="btn btn-primary" data-action="closeModal">Понятно</button>'
+      );
+    },
+
     editProfile: function(){ S.profileEdit=true; render(); },
     cancelEditProfile: function(){ S.profileEdit=false; render(); },
 
@@ -1198,8 +1550,11 @@
 
   /* ---- form submits ---- */
 
-  function validEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
-  function validPhone(v){ return /^\+?\d[\d\s\-]{9,14}\d$/.test(v); }
+  function normalizeTelegram(v){
+    v = v.trim().replace(/^@+/, "");
+    return v ? "@" + v : "";
+  }
+  function validTelegram(v){ return /^[A-Za-z][A-Za-z0-9_]{4,31}$/.test(v.replace(/^@/, "")); }
 
   document.addEventListener("submit", async function(e){
     if(e.target.id==="registerForm"){
@@ -1210,28 +1565,26 @@
       var goal = document.getElementById("f_goal").value;
       var goalOtherEl = document.getElementById("f_goal_other");
       var goalOther = goalOtherEl ? goalOtherEl.value.trim() : "";
-      var contact = document.getElementById("f_contact").value.trim();
+      var contact = normalizeTelegram(document.getElementById("f_contact").value);
       var ok = true;
       if(fio.length<3){ setErr("fio","Введите фамилию и имя полностью"); ok=false; }
-      if(S.contactType==="email" && !validEmail(contact)){ setErr("contact","Введите корректный e-mail"); ok=false; }
-      if(S.contactType==="phone" && !validPhone(contact)){ setErr("contact","Введите корректный номер телефона"); ok=false; }
+      if(!validTelegram(contact)){ setErr("contact","Введите корректный Telegram-username (5–32 символа, латиница/цифры/_)"); ok=false; }
       if(!ok){ S.pendingReg={fio:fio,city:city,goal:goal,goalOther:goalOther,contact:contact}; render(); return; }
       S.pendingReg = {
         fio:fio, city:city, goal: goal==="Другое" && goalOther ? goalOther : goal, goalOther:goalOther,
-        contact:contact, contactType:S.contactType
+        contact:contact, contactType:"telegram"
       };
-      toast("Демо-код отправлен: 123456");
+      toast("Демо-код отправлен в Telegram: 123456");
       history_stack.push(S.screen);
       goto("registerOtp");
     }
     if(e.target.id==="loginForm"){
       e.preventDefault();
       clearErr();
-      var c = document.getElementById("f_login_contact").value.trim();
-      var ok2 = S.contactType==="email" ? validEmail(c) : validPhone(c);
-      if(!ok2){ setErr("contact","Введите корректные данные"); render(); return; }
+      var c = normalizeTelegram(document.getElementById("f_login_contact").value);
+      if(!validTelegram(c)){ setErr("contact","Введите корректный Telegram-username"); render(); return; }
       S.pendingLoginContact = c;
-      toast("Демо-код отправлен: 123456");
+      toast("Демо-код отправлен в Telegram: 123456");
       history_stack.push(S.screen);
       goto("loginOtp");
     }
@@ -1286,5 +1639,7 @@
   init();
 })();
 </script>
+
+
 </body>
 </html>
